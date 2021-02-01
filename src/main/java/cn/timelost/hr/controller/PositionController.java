@@ -32,7 +32,7 @@ public class PositionController {
     @GetMapping("/position/list")
     public PageInfo<PositionVo> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                     @RequestParam(value = "departmentId", required = false,defaultValue = "0") Integer departmentId) {
+                                     @RequestParam(value = "departmentId", required = false, defaultValue = "0") Integer departmentId) {
         return positionService.findAll(page, size, departmentId);
     }
 

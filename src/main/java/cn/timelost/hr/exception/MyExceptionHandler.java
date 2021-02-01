@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
 /**
@@ -32,5 +33,13 @@ public class MyExceptionHandler {
         log.error(bindingResult.getFieldError().getField() + " " + bindingResult.getFieldError().getDefaultMessage());
         return ResultVo.fail(ResultEnum.PARAM_ERROR,
                 bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseBody
+    public ResultVo SQLIntegrity(SQLIntegrityConstraintViolationException e) {
+        log.error(e.getMessage());
+        log.error(e.getSQLState());
+        return ResultVo.fail(ResultEnum.PARAM_ERROR,"请先删除已有数据！");
     }
 }

@@ -20,12 +20,12 @@ public class PersonalController {
 
     @Autowired
     PersonalService personalService;
-    
+
     @GetMapping("/personal/list")
     public PageInfo<PersonalVo> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                     @RequestParam(value = "departmentId", required = false,defaultValue = "0") Integer departmentId) {
-        return personalService.findAll(page,size,departmentId);
+                                     @RequestParam(value = "departmentId", required = false, defaultValue = "0") Integer departmentId) {
+        return personalService.findAll(page, size, departmentId);
     }
 
     @PostMapping("/personal/search")
