@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.timelost.hr.dao.PositionDao">
+    <resultMap id="BaseResultMap" type="cn.timelost.hr.pojo.Position">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, position_name, description, department_id, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from position
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from position
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.Position"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into position (position_name, description, department_id,
+        create_time, update_time)
+        values (#{positionName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.Position"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="positionName != null">
+                position_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.timelost.hr.pojo.Position">
+        <!--@mbg.generated-->
+        update position
+        <set>
+            <if test="positionName != null">
+                position_name = #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+<!--            <if test="createTime != null">-->
+<!--                create_time = #{createTime,jdbcType=TIMESTAMP},-->
+<!--            </if>-->
+<!--            <if test="updateTime != null">-->
+<!--                update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+<!--            </if>-->
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.timelost.hr.pojo.Position">
+        <!--@mbg.generated-->
+        update position
+        set position_name = #{positionName,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        department_id = #{departmentId,jdbcType=INTEGER}
+--         create_time = #{createTime,jdbcType=TIMESTAMP},
+--         update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectAll" resultType="cn.timelost.hr.vo.PositionVo">
+        select p.*, d.department_name
+        from position p LEFT JOIN department d
+        on p.department_id=d.id
+        <where>
+            <if test="departmentId != null">
+                p.department_id = #{departmentId,jdbcType=NUMERIC}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByIdIn">
+        delete from position
+        where
+        id in
+        <foreach collection="idList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
+    <select id="selectAllByPositionNameLike" resultType="cn.timelost.hr.vo.PositionVo">
+        select p.*, d.department_name
+        from position p LEFT JOIN department d
+        on p.department_id=d.id
+        where p.position_name like "%"#{positionName,jdbcType=VARCHAR}"%"
+    </select>
+    <select id="selectAllByDepartmentId" resultType="cn.timelost.hr.vo.PositionSelectVo">
+        select
+        <include refid="Base_Column_List"/>
+        from position
+        where
+        department_id = #{departmentId,jdbcType=NUMERIC}
+    </select>
+</mapper>
