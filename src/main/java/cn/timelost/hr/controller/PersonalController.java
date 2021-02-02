@@ -1,6 +1,7 @@
 package cn.timelost.hr.controller;
 
 import cn.timelost.hr.service.PersonalService;
+import cn.timelost.hr.vo.PersonalSelectVo;
 import cn.timelost.hr.vo.PersonalVo;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PersonalForm;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +35,11 @@ public class PersonalController {
                                        @RequestParam(value = "size", defaultValue = "10") Integer size,
                                        @RequestParam(value = "personalName") String personalName) {
         return personalService.search(personalName, page, size);
+    }
+
+    @GetMapping("/personal/select")
+    public List<PersonalSelectVo> findSelect() {
+        return personalService.findSelect();
     }
 
     @GetMapping("/personal/{id}")

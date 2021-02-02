@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.timelost.hr.dao.PersonalTrainDao">
+    <resultMap id="BaseResultMap" type="cn.timelost.hr.pojo.PersonalTrain">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="personal_id" jdbcType="INTEGER" property="personalId"/>
+        <result column="personal_name" jdbcType="VARCHAR" property="personalName"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="train_content" jdbcType="VARCHAR" property="trainContent"/>
+        <result column="train_score" jdbcType="DECIMAL" property="trainScore"/>
+        <result column="train_cost" jdbcType="DECIMAL" property="trainCost"/>
+        <result column="remake" jdbcType="VARCHAR" property="remake"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, personal_id, personal_name, department_name, position_name, begin_date, end_date,
+        train_content, train_score, train_cost, remake
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from personal_train
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from personal_train
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalTrain"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_train (personal_id, personal_name, department_name,
+        position_name, begin_date, end_date,
+        train_content, train_score, train_cost,
+        remake)
+        values (#{personalId,jdbcType=INTEGER}, #{personalName,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR},
+        #{positionName,jdbcType=VARCHAR}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},
+        #{trainContent,jdbcType=VARCHAR}, #{trainScore,jdbcType=DECIMAL}, #{trainCost,jdbcType=DECIMAL},
+        #{remake,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalTrain"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_train
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                personal_id,
+            </if>
+            <if test="personalName != null">
+                personal_name,
+            </if>
+            <if test="departmentName != null">
+                department_name,
+            </if>
+            <if test="positionName != null">
+                position_name,
+            </if>
+            <if test="beginDate != null">
+                begin_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="trainContent != null">
+                train_content,
+            </if>
+            <if test="trainScore != null">
+                train_score,
+            </if>
+            <if test="trainCost != null">
+                train_cost,
+            </if>
+            <if test="remake != null">
+                remake,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null">
+                #{beginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="trainContent != null">
+                #{trainContent,jdbcType=VARCHAR},
+            </if>
+            <if test="trainScore != null">
+                #{trainScore,jdbcType=DECIMAL},
+            </if>
+            <if test="trainCost != null">
+                #{trainCost,jdbcType=DECIMAL},
+            </if>
+            <if test="remake != null">
+                #{remake,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.timelost.hr.pojo.PersonalTrain">
+        <!--@mbg.generated-->
+        update personal_train
+        <set>
+            <if test="personalId != null">
+                personal_id = #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                personal_name = #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                department_name = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                position_name = #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="trainContent != null">
+                train_content = #{trainContent,jdbcType=VARCHAR},
+            </if>
+            <if test="trainScore != null">
+                train_score = #{trainScore,jdbcType=DECIMAL},
+            </if>
+            <if test="trainCost != null">
+                train_cost = #{trainCost,jdbcType=DECIMAL},
+            </if>
+            <if test="remake != null">
+                remake = #{remake,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.timelost.hr.pojo.PersonalTrain">
+        <!--@mbg.generated-->
+        update personal_train
+        set personal_id = #{personalId,jdbcType=INTEGER},
+        personal_name = #{personalName,jdbcType=VARCHAR},
+        department_name = #{departmentName,jdbcType=VARCHAR},
+        position_name = #{positionName,jdbcType=VARCHAR},
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+        train_content = #{trainContent,jdbcType=VARCHAR},
+        train_score = #{trainScore,jdbcType=DECIMAL},
+        train_cost = #{trainCost,jdbcType=DECIMAL},
+        remake = #{remake,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectAllByBeginDateAndEndDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personal_train
+        where begin_date BETWEEN #{beginDate} and #{endDate}
+        or end_date BETWEEN #{beginDate} and #{endDate}
+    </select>
+    <select id="selectAllByDepartmentName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personal_train
+        <where>
+            <if test="departmentName!=null">
+                department_name = #{departmentName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByIdIn">
+        delete from personal_train
+        where
+        id in
+        <foreach collection="idList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
+</mapper>

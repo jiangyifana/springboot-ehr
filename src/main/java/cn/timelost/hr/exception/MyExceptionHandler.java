@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
@@ -40,6 +42,13 @@ public class MyExceptionHandler {
     public ResultVo SQLIntegrity(SQLIntegrityConstraintViolationException e) {
         log.error(e.getMessage());
         log.error(e.getSQLState());
-        return ResultVo.fail(ResultEnum.PARAM_ERROR,"请先删除已有数据！");
+        return ResultVo.fail(ResultEnum.PARAM_ERROR,"请先删除已有数据!");
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ResultVo Exception(Exception e) {
+        log.error(e.getMessage());
+        return ResultVo.fail(ResultEnum.PARAM_ERROR,"服务器异常!");
     }
 }

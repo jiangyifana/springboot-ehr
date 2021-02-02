@@ -1,10 +1,12 @@
 package cn.timelost.hr.service;
 
+import cn.timelost.hr.vo.PersonalSelectVo;
 import cn.timelost.hr.vo.PersonalVo;
 import cn.timelost.hr.vo.input.PersonalForm;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author: Jyf
@@ -15,6 +17,8 @@ public interface PersonalService {
     PageInfo<PersonalVo> findAll(int pageNum, int pageSize, int departmentId);
 
     PageInfo<PersonalVo> search(String personalName, int pageNum, int pageSize);
+
+    List<PersonalSelectVo> findSelect();
 
     PersonalVo find(int id);
 

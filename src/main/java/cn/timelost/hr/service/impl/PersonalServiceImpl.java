@@ -7,6 +7,7 @@ import cn.timelost.hr.pojo.Personal;
 import cn.timelost.hr.service.DepartmentService;
 import cn.timelost.hr.service.PersonalService;
 import cn.timelost.hr.service.PositionService;
+import cn.timelost.hr.vo.PersonalSelectVo;
 import cn.timelost.hr.vo.PersonalVo;
 import cn.timelost.hr.vo.input.PersonalForm;
 import com.github.pagehelper.PageHelper;
@@ -18,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: Jyf
@@ -48,6 +50,17 @@ public class PersonalServiceImpl implements PersonalService {
         PageHelper.startPage(pageNum, pageSize);
         List<PersonalVo> personalVos = personalDao.selectAllByNameLike(personalName);
         return new PageInfo<>(personalVos);
+    }
+
+    @Override
+    public List<PersonalSelectVo> findSelect() {
+        List<PersonalVo> personalVos = personalDao.selectAllByDepartmentId(0);
+        List<PersonalSelectVo> collect = personalVos.stream().map(e -> {
+            PersonalSelectVo personalSelectVo = new PersonalSelectVo();
+            BeanUtils.copyProperties(e, personalSelectVo);
+            return personalSelectVo;
+        }).collect(Collectors.toList());
+        return collect;
     }
 
     @Override
