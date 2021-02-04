@@ -45,10 +45,10 @@ public class MyExceptionHandler {
         return ResultVo.fail(ResultEnum.PARAM_ERROR,"请先删除已有数据!");
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public ResultVo Exception(Exception e) {
-        log.error(e.getMessage());
-        return ResultVo.fail(ResultEnum.PARAM_ERROR,"服务器异常!");
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseBody
+//    public ResultVo Exception(Exception e) {
+//        log.error(e.getMessage());
+//        return ResultVo.fail(ResultEnum.PARAM_ERROR,"服务器异常!");
+//    }
 }

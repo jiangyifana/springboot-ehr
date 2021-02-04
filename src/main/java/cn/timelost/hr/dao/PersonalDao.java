@@ -29,7 +29,7 @@ public interface PersonalDao {
     /**
      * @mbg.generated
      */
-    Personal selectByPrimaryKey(Integer id);
+    PersonalVo selectByPrimaryKey(Integer id);
 
     /**
      * @mbg.generated

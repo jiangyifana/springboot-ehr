@@ -16,8 +16,6 @@ import java.util.Date;
 public class PersonalTrainForm {
     @NotNull(message = "用户必填")
     private Integer personalId;
-    @NotNull(message = "岗位必填")
-    private Integer positionId;
     @NotNull(message = "时间必填")
     @JsonFormat(
             pattern = "yyyy-MM-dd",

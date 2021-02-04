@@ -65,12 +65,10 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public PersonalVo find(int id) {
-        Personal personal = personalDao.selectByPrimaryKey(id);
-        if (ObjectUtils.isEmpty(personal)) {
+        PersonalVo personalVo = personalDao.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(personalVo)) {
             throw new BaseException(ResultEnum.PERSONAL_NOT_EXIST);
         }
-        PersonalVo personalVo = new PersonalVo();
-        BeanUtils.copyProperties(personal, personalVo);
         return personalVo;
     }
 
@@ -89,7 +87,7 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public void deleteById(Integer id) {
-        Personal personal = personalDao.selectByPrimaryKey(id);
+        PersonalVo personal = personalDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(personal)) {
             throw new BaseException(ResultEnum.PERSONAL_NOT_EXIST);
         }
@@ -103,10 +101,12 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public void updateById(Integer id, PersonalForm personalForm) {
-        Personal personal = personalDao.selectByPrimaryKey(id);
-        if (ObjectUtils.isEmpty(personal)) {
+        PersonalVo personalVo = personalDao.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(personalVo)) {
             throw new BaseException(ResultEnum.POSITION_NOT_EXIST);
         }
+        Personal personal = new Personal();
+        BeanUtils.copyProperties(personalVo, personal);
         BeanUtils.copyProperties(personalForm, personal);
         personal.setId(id);
         personalDao.updateByPrimaryKeySelective(personal);

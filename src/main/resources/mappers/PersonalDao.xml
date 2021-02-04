@@ -25,12 +25,15 @@
     id, `name`, gender, birthday, phone, email, `identity`, education, school, img_url, 
     work_status, department_id, position_id, begin_date, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.timelost.hr.vo.PersonalVo">
     <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from personal
-    where id = #{id,jdbcType=INTEGER}
+    select p.*,d.department_name,s.position_name
+    from personal p
+    LEFT JOIN department d
+    on p.department_id=d.id
+    LEFT JOIN position s
+    on p.position_id=s.id
+    where p.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->

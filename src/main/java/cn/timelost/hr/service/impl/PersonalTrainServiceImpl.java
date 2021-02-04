@@ -34,10 +34,10 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
 
     @Resource
     PersonalTrainDao personalTrainDao;
-    @Resource
-    PositionService positionService;
-    @Resource
-    DepartmentService departmentService;
+//    @Resource
+//    PositionService positionService;
+//    @Resource
+//    DepartmentService departmentService;
     @Resource
     PersonalService personalService;
 
@@ -72,13 +72,11 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     @Override
     public void insert(PersonalTrainForm personalTrainForm) {
         PersonalVo personalVo = personalService.find(personalTrainForm.getPersonalId());
-        Position position = positionService.find(personalTrainForm.getPositionId());
-        Department department = departmentService.find(position.getDepartmentId());
         PersonalTrain personalTrain = new PersonalTrain();
         BeanUtils.copyProperties(personalTrainForm, personalTrain);
         personalTrain.setPersonalName(personalVo.getName());
-        personalTrain.setPositionName(position.getPositionName());
-        personalTrain.setDepartmentName(department.getDepartmentName());
+        personalTrain.setPositionName(personalVo.getPositionName());
+        personalTrain.setDepartmentName(personalVo.getDepartmentName());
         personalTrainDao.insertSelective(personalTrain);
     }
 
@@ -103,12 +101,10 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
             throw new BaseException(ResultEnum.PERSONAL_TRAIN_NOT_EXIST);
         }
         BeanUtils.copyProperties(personalTrainForm, personalTrain);
-        Position position = positionService.find(personalTrainForm.getPositionId());
-        Department department = departmentService.find(position.getDepartmentId());
         PersonalVo personalVo = personalService.find(personalTrainForm.getPersonalId());
         personalTrain.setPersonalName(personalVo.getName());
-        personalTrain.setPositionName(position.getPositionName());
-        personalTrain.setDepartmentName(department.getDepartmentName());
+        personalTrain.setPositionName(personalVo.getPositionName());
+        personalTrain.setDepartmentName(personalVo.getDepartmentName());
         personalTrainDao.updateByPrimaryKeySelective(personalTrain);
     }
 }
