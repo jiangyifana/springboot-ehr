@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.timelost.hr.dao.PersonalRewardDao">
+    <resultMap id="BaseResultMap" type="cn.timelost.hr.pojo.PersonalReward">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="personal_id" jdbcType="INTEGER" property="personalId"/>
+        <result column="personal_name" jdbcType="VARCHAR" property="personalName"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="reward_date" jdbcType="DATE" property="rewardDate"/>
+        <result column="reward_kind" jdbcType="INTEGER" property="rewardKind"/>
+        <result column="reward_amount" jdbcType="DECIMAL" property="rewardAmount"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, personal_id, personal_name, department_name, position_name, reward_date, reward_kind,
+        reward_amount, description
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from personal_reward
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from personal_reward
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalReward"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_reward (personal_id, personal_name, department_name,
+        position_name, reward_date, reward_kind,
+        reward_amount, description)
+        values (#{personalId,jdbcType=INTEGER}, #{personalName,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR},
+        #{positionName,jdbcType=VARCHAR}, #{rewardDate,jdbcType=DATE}, #{rewardKind,jdbcType=INTEGER},
+        #{rewardAmount,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalReward"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_reward
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                personal_id,
+            </if>
+            <if test="personalName != null">
+                personal_name,
+            </if>
+            <if test="departmentName != null">
+                department_name,
+            </if>
+            <if test="positionName != null">
+                position_name,
+            </if>
+            <if test="rewardDate != null">
+                reward_date,
+            </if>
+            <if test="rewardKind != null">
+                reward_kind,
+            </if>
+            <if test="rewardAmount != null">
+                reward_amount,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardDate != null">
+                #{rewardDate,jdbcType=DATE},
+            </if>
+            <if test="rewardKind != null">
+                #{rewardKind,jdbcType=INTEGER},
+            </if>
+            <if test="rewardAmount != null">
+                #{rewardAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.timelost.hr.pojo.PersonalReward">
+        <!--@mbg.generated-->
+        update personal_reward
+        <set>
+            <if test="personalId != null">
+                personal_id = #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                personal_name = #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                department_name = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                position_name = #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardDate != null">
+                reward_date = #{rewardDate,jdbcType=DATE},
+            </if>
+            <if test="rewardKind != null">
+                reward_kind = #{rewardKind,jdbcType=INTEGER},
+            </if>
+            <if test="rewardAmount != null">
+                reward_amount = #{rewardAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.timelost.hr.pojo.PersonalReward">
+        <!--@mbg.generated-->
+        update personal_reward
+        set personal_id = #{personalId,jdbcType=INTEGER},
+        personal_name = #{personalName,jdbcType=VARCHAR},
+        department_name = #{departmentName,jdbcType=VARCHAR},
+        position_name = #{positionName,jdbcType=VARCHAR},
+        reward_date = #{rewardDate,jdbcType=DATE},
+        reward_kind = #{rewardKind,jdbcType=INTEGER},
+        reward_amount = #{rewardAmount,jdbcType=DECIMAL},
+        description = #{description,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personal_reward
+        <where>
+            <if test="departmentName!=null">
+                department_name = #{departmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="personalId!=0">
+                and personal_id = #{personalId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+    <select id="selectAllByDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personal_reward
+        <where>
+            <if test="year!=0 and month!=0">
+                YEAR(reward_date)=#{year} and MONTH(reward_date)=#{month}
+            </if>
+            <if test="personalId!=0">
+                and personal_id=#{personalId}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByIdIn">
+        delete from personal_reward
+        where
+        id in
+        <foreach collection="idList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
+</mapper>

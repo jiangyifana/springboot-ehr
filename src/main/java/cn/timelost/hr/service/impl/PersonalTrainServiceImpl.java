@@ -34,10 +34,6 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
 
     @Resource
     PersonalTrainDao personalTrainDao;
-//    @Resource
-//    PositionService positionService;
-//    @Resource
-//    DepartmentService departmentService;
     @Resource
     PersonalService personalService;
 
