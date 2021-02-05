@@ -27,8 +27,9 @@ public class PersonalTrainController {
     @GetMapping("/train/list")
     public PageInfo<PersonalTrain> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                         @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                        @RequestParam(value = "departmentName", required = false) String departmentName) {
-        return personalTrainService.findAll(page, size, departmentName);
+                                        @RequestParam(value = "departmentName", required = false) String departmentName,
+                                        @RequestParam(value = "personalId", defaultValue = "0") Integer personalId) {
+        return personalTrainService.findAll(page, size, departmentName,personalId);
     }
 
     @PostMapping("/train/search")

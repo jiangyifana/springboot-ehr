@@ -38,14 +38,13 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     PersonalService personalService;
 
     @Override
-    public PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName) {
+    public PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName, Integer personalId) {
         PageHelper.startPage(pageNum, pageSize);
         List<PersonalTrain> personalTrains;
         if (ObjectUtils.isEmpty(departmentName)) {
-            personalTrains = personalTrainDao.selectAllByDepartmentName(null);
-        } else {
-            personalTrains = personalTrainDao.selectAllByDepartmentName(departmentName);
+            departmentName = null;
         }
+        personalTrains = personalTrainDao.selectAllByDepartmentName(departmentName, personalId);
         return new PageInfo<>(personalTrains);
     }
 

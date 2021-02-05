@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface PersonalTrainService {
 
-    PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName);
+    PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName, Integer personalId);
 
     PageInfo<PersonalTrain> searchByDate(Date beginDate, Date endDate, int pageNum, int pageSize);
 

@@ -1,7 +1,10 @@
 package cn.timelost.hr.dao;
+
 import java.util.Collection;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
 import java.util.Date;
 
 import cn.timelost.hr.pojo.PersonalTrain;
@@ -42,7 +45,7 @@ public interface PersonalTrainDao {
 
     List<PersonalTrain> selectAllByBeginDateAndEndDate(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
 
-    List<PersonalTrain> selectAllByDepartmentName(@Param("departmentName") String departmentName);
+    List<PersonalTrain> selectAllByDepartmentName(@Param("departmentName") String departmentName, @Param("personalId") Integer personalId);
 
     int deleteByIdIn(@Param("idList") Collection<Integer> idList);
 }

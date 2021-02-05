@@ -180,6 +180,9 @@
             <if test="departmentName!=null">
                 department_name = #{departmentName,jdbcType=VARCHAR}
             </if>
+            <if test="personalId!=0">
+                and personal_id =#{personalId}
+            </if>
         </where>
     </select>
     <delete id="deleteByIdIn">
