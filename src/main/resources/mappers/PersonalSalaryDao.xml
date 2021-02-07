@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.timelost.hr.dao.PersonalSalaryDao">
+    <resultMap id="BaseResultMap" type="cn.timelost.hr.pojo.PersonalSalary">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="personal_id" jdbcType="INTEGER" property="personalId"/>
+        <result column="personal_name" jdbcType="VARCHAR" property="personalName"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="salary_date" jdbcType="DATE" property="salaryDate"/>
+        <result column="basis_salary" jdbcType="DECIMAL" property="basisSalary"/>
+        <result column="subsidy_salary" jdbcType="DECIMAL" property="subsidySalary"/>
+        <result column="social_salary" jdbcType="DECIMAL" property="socialSalary"/>
+        <result column="provident_fund" jdbcType="DECIMAL" property="providentFund"/>
+        <result column="bonus" jdbcType="DECIMAL" property="bonus"/>
+        <result column="all_salary" jdbcType="DECIMAL" property="allSalary"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, personal_id, personal_name, department_name, position_name, salary_date, basis_salary,
+        subsidy_salary, social_salary, provident_fund, bonus, all_salary
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from personal_salary
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from personal_salary
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalSalary"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_salary (personal_id, personal_name, department_name,
+        position_name, salary_date, basis_salary,
+        subsidy_salary, social_salary, provident_fund,
+        bonus, all_salary)
+        values (#{personalId,jdbcType=INTEGER}, #{personalName,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR},
+        #{positionName,jdbcType=VARCHAR}, #{salaryDate,jdbcType=DATE}, #{basisSalary,jdbcType=DECIMAL},
+        #{subsidySalary,jdbcType=DECIMAL}, #{socialSalary,jdbcType=DECIMAL}, #{providentFund,jdbcType=DECIMAL},
+        #{bonus,jdbcType=DECIMAL}, #{allSalary,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.timelost.hr.pojo.PersonalSalary"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into personal_salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                personal_id,
+            </if>
+            <if test="personalName != null">
+                personal_name,
+            </if>
+            <if test="departmentName != null">
+                department_name,
+            </if>
+            <if test="positionName != null">
+                position_name,
+            </if>
+            <if test="salaryDate != null">
+                salary_date,
+            </if>
+            <if test="basisSalary != null">
+                basis_salary,
+            </if>
+            <if test="subsidySalary != null">
+                subsidy_salary,
+            </if>
+            <if test="socialSalary != null">
+                social_salary,
+            </if>
+            <if test="providentFund != null">
+                provident_fund,
+            </if>
+            <if test="bonus != null">
+                bonus,
+            </if>
+            <if test="allSalary != null">
+                all_salary,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">
+                #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="salaryDate != null">
+                #{salaryDate,jdbcType=DATE},
+            </if>
+            <if test="basisSalary != null">
+                #{basisSalary,jdbcType=DECIMAL},
+            </if>
+            <if test="subsidySalary != null">
+                #{subsidySalary,jdbcType=DECIMAL},
+            </if>
+            <if test="socialSalary != null">
+                #{socialSalary,jdbcType=DECIMAL},
+            </if>
+            <if test="providentFund != null">
+                #{providentFund,jdbcType=DECIMAL},
+            </if>
+            <if test="bonus != null">
+                #{bonus,jdbcType=DECIMAL},
+            </if>
+            <if test="allSalary != null">
+                #{allSalary,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.timelost.hr.pojo.PersonalSalary">
+        <!--@mbg.generated-->
+        update personal_salary
+        <set>
+            <if test="personalId != null">
+                personal_id = #{personalId,jdbcType=INTEGER},
+            </if>
+            <if test="personalName != null">
+                personal_name = #{personalName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                department_name = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                position_name = #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="salaryDate != null">
+                salary_date = #{salaryDate,jdbcType=DATE},
+            </if>
+            <if test="basisSalary != null">
+                basis_salary = #{basisSalary,jdbcType=DECIMAL},
+            </if>
+            <if test="subsidySalary != null">
+                subsidy_salary = #{subsidySalary,jdbcType=DECIMAL},
+            </if>
+            <if test="socialSalary != null">
+                social_salary = #{socialSalary,jdbcType=DECIMAL},
+            </if>
+            <if test="providentFund != null">
+                provident_fund = #{providentFund,jdbcType=DECIMAL},
+            </if>
+            <if test="bonus != null">
+                bonus = #{bonus,jdbcType=DECIMAL},
+            </if>
+            <if test="allSalary != null">
+                all_salary = #{allSalary,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.timelost.hr.pojo.PersonalSalary">
+        <!--@mbg.generated-->
+        update personal_salary
+        set personal_id = #{personalId,jdbcType=INTEGER},
+        personal_name = #{personalName,jdbcType=VARCHAR},
+        department_name = #{departmentName,jdbcType=VARCHAR},
+        position_name = #{positionName,jdbcType=VARCHAR},
+        salary_date = #{salaryDate,jdbcType=DATE},
+        basis_salary = #{basisSalary,jdbcType=DECIMAL},
+        subsidy_salary = #{subsidySalary,jdbcType=DECIMAL},
+        social_salary = #{socialSalary,jdbcType=DECIMAL},
+        provident_fund = #{providentFund,jdbcType=DECIMAL},
+        bonus = #{bonus,jdbcType=DECIMAL},
+        all_salary = #{allSalary,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personal_salary
+        <where>
+            <if test="departmentName!=null">
+                and department_name = #{departmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="personalId!=0">
+                and personal_id = #{personalId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=0 and month!=0">
+                and YEAR(salary_date)=#{year} and MONTH(salary_date)=#{month}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByIdIn">
+        delete from personal_salary
+        where
+        id in
+        <foreach collection="idList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
+</mapper>
