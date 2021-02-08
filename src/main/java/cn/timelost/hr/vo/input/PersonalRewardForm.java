@@ -14,9 +14,6 @@ import java.util.Date;
 public class PersonalRewardForm {
     @NotNull(message = "用户必填")
     private Integer personalId;
-//    private String personalName;
-//    private String departmentName;
-//    private String positionName;
     @NotNull(message = "时间必填")
     @JsonFormat(
             pattern = "yyyy-MM-dd",

@@ -14,8 +14,6 @@ import java.util.Collection;
 public interface PersonalSalaryService {
     PageInfo<PersonalSalary> findAll(int year, int month, String departmentName, int personalId, int pageNum, int pageSize);
 
-//    PageInfo<PersonalSalary> search(int year, int month, int personalId, int pageNum, int pageSize);
-
     PersonalSalary find(int id);
 
     void insert(PersonalSalaryForm personalSalaryForm);
