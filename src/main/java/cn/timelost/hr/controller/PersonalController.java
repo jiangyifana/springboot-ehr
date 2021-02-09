@@ -26,15 +26,10 @@ public class PersonalController {
     @GetMapping("/personal/list")
     public PageInfo<PersonalVo> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                     @RequestParam(value = "departmentId", required = false, defaultValue = "0") Integer departmentId) {
-        return personalService.findAll(page, size, departmentId);
-    }
-
-    @PostMapping("/personal/search")
-    public PageInfo<PersonalVo> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                       @RequestParam(value = "personalName") String personalName) {
-        return personalService.search(personalName, page, size);
+                                     @RequestParam(value = "departmentId", defaultValue = "0") Integer departmentId,
+                                     @RequestParam(value = "personalName", required = false) String personalName,
+                                     @RequestParam(value = "workStatus", defaultValue = "0") Integer workStatus) {
+        return personalService.findAll(page, size, departmentId, personalName, workStatus);
     }
 
     @GetMapping("/personal/select")

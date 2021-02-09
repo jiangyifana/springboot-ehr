@@ -15,9 +15,7 @@ import java.util.List;
  */
 public interface PositionService {
 
-    PageInfo<PositionVo> findAll(int pageNum, int pageSize, int departmentId);
-
-    PageInfo<PositionVo> search(String positionName, int pageNum, int pageSize);
+    PageInfo<PositionVo> findAll(int pageNum, int pageSize, int departmentId, String positionName);
 
     Position find(int id);
 

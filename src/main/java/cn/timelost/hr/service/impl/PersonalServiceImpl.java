@@ -36,25 +36,18 @@ public class PersonalServiceImpl implements PersonalService {
     PositionService positionService;
 
     @Override
-    public PageInfo<PersonalVo> findAll(int pageNum, int pageSize, int departmentId) {
+    public PageInfo<PersonalVo> findAll(int pageNum, int pageSize, int departmentId, String personalName, int workStatus) {
         PageHelper.startPage(pageNum, pageSize);
-        List<PersonalVo> personals = personalDao.selectAllByDepartmentId(departmentId);
+        if (ObjectUtils.isEmpty(personalName)) {
+            personalName = null;
+        }
+        List<PersonalVo> personals = personalDao.selectAll(departmentId, personalName, workStatus);
         return new PageInfo<>(personals);
     }
 
     @Override
-    public PageInfo<PersonalVo> search(String personalName, int pageNum, int pageSize) {
-        if (ObjectUtils.isEmpty(personalName)) {
-            throw new BaseException(ResultEnum.PERSONAL_NOT_EXIST);
-        }
-        PageHelper.startPage(pageNum, pageSize);
-        List<PersonalVo> personalVos = personalDao.selectAllByNameLike(personalName);
-        return new PageInfo<>(personalVos);
-    }
-
-    @Override
     public List<PersonalSelectVo> findSelect() {
-        List<PersonalVo> personalVos = personalDao.selectAllByDepartmentId(0);
+        List<PersonalVo> personalVos = personalDao.selectAll(0, null, 0);
         List<PersonalSelectVo> collect = personalVos.stream().map(e -> {
             PersonalSelectVo personalSelectVo = new PersonalSelectVo();
             BeanUtils.copyProperties(e, personalSelectVo);

@@ -43,9 +43,8 @@ public interface PersonalTrainDao {
      */
     int updateByPrimaryKey(PersonalTrain record);
 
-    List<PersonalTrain> selectAllByBeginDateAndEndDate(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
-
-    List<PersonalTrain> selectAllByDepartmentName(@Param("departmentName") String departmentName, @Param("personalId") Integer personalId);
+    List<PersonalTrain> selectAll(@Param("departmentName") String departmentName, @Param("personalId") Integer personalId,
+                                                  @Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
 
     int deleteByIdIn(@Param("idList") Collection<Integer> idList);
 }

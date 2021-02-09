@@ -1,7 +1,9 @@
 package cn.timelost.hr.dao;
+
 import cn.timelost.hr.vo.PositionSelectVo;
 import cn.timelost.hr.vo.PositionVo;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -41,9 +43,7 @@ public interface PositionDao {
      */
     int updateByPrimaryKey(Position record);
 
-    List<PositionVo> selectAll(@Param("departmentId") Integer departmentId);
-
-    List<PositionVo> selectAllByPositionNameLike(@Param("positionName") String positionName);
+    List<PositionVo> selectAll(@Param("departmentId") Integer departmentId, @Param("positionName") String positionName);
 
     int deleteByIdIn(@Param("idList") Collection<Integer> idList);
 

@@ -28,17 +28,19 @@ public class PersonalTrainController {
     public PageInfo<PersonalTrain> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                         @RequestParam(value = "size", defaultValue = "10") Integer size,
                                         @RequestParam(value = "departmentName", required = false) String departmentName,
-                                        @RequestParam(value = "personalId", defaultValue = "0") Integer personalId) {
-        return personalTrainService.findAll(page, size, departmentName,personalId);
+                                        @RequestParam(value = "personalId", defaultValue = "0") Integer personalId,
+                                        @RequestParam(value = "beginDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
+                                        @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        return personalTrainService.findAll(page, size, departmentName, personalId, beginDate, endDate);
     }
 
-    @PostMapping("/train/search")
-    public PageInfo<PersonalTrain> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                          @RequestParam(value = "beginDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
-                                          @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        return personalTrainService.searchByDate(beginDate, endDate, page, size);
-    }
+//    @PostMapping("/train/search")
+//    public PageInfo<PersonalTrain> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
+//                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
+//                                          @RequestParam(value = "beginDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
+//                                          @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+//        return personalTrainService.searchByDate(beginDate, endDate, page, size);
+//    }
 
     @GetMapping("/train/{id}")
     public PersonalTrain findById(@PathVariable Integer id) {

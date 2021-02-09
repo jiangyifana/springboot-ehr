@@ -38,20 +38,12 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     PersonalService personalService;
 
     @Override
-    public PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName, Integer personalId) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<PersonalTrain> personalTrains;
+    public PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName, int personalId, Date beginDate, Date endDate) {
         if (ObjectUtils.isEmpty(departmentName)) {
             departmentName = null;
         }
-        personalTrains = personalTrainDao.selectAllByDepartmentName(departmentName, personalId);
-        return new PageInfo<>(personalTrains);
-    }
-
-    @Override
-    public PageInfo<PersonalTrain> searchByDate(Date beginDate, Date endDate, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<PersonalTrain> personalTrains = personalTrainDao.selectAllByBeginDateAndEndDate(beginDate, endDate);
+        List<PersonalTrain> personalTrains = personalTrainDao.selectAll(departmentName, personalId, beginDate, endDate);
         return new PageInfo<>(personalTrains);
     }
 

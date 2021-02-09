@@ -86,12 +86,12 @@
             <if test="departmentId != null">
                 department_id = #{departmentId,jdbcType=INTEGER},
             </if>
-<!--            <if test="createTime != null">-->
-<!--                create_time = #{createTime,jdbcType=TIMESTAMP},-->
-<!--            </if>-->
-<!--            <if test="updateTime != null">-->
-<!--                update_time = #{updateTime,jdbcType=TIMESTAMP},-->
-<!--            </if>-->
+            <!--            <if test="createTime != null">-->
+            <!--                create_time = #{createTime,jdbcType=TIMESTAMP},-->
+            <!--            </if>-->
+            <!--            <if test="updateTime != null">-->
+            <!--                update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+            <!--            </if>-->
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -101,8 +101,8 @@
         set position_name = #{positionName,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},
         department_id = #{departmentId,jdbcType=INTEGER}
---         create_time = #{createTime,jdbcType=TIMESTAMP},
---         update_time = #{updateTime,jdbcType=TIMESTAMP}
+        -- create_time = #{createTime,jdbcType=TIMESTAMP},
+        -- update_time = #{updateTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectAll" resultType="cn.timelost.hr.vo.PositionVo">
@@ -110,8 +110,11 @@
         from position p LEFT JOIN department d
         on p.department_id=d.id
         <where>
-            <if test="departmentId != null">
-                p.department_id = #{departmentId,jdbcType=NUMERIC}
+            <if test="departmentId != 0">
+                and p.department_id = #{departmentId,jdbcType=NUMERIC}
+            </if>
+            <if test="positionName!=null">
+                and p.position_name like "%"#{positionName,jdbcType=VARCHAR}"%"
             </if>
         </where>
     </select>
@@ -123,12 +126,6 @@
             #{item,jdbcType=NUMERIC}
         </foreach>
     </delete>
-    <select id="selectAllByPositionNameLike" resultType="cn.timelost.hr.vo.PositionVo">
-        select p.*, d.department_name
-        from position p LEFT JOIN department d
-        on p.department_id=d.id
-        where p.position_name like "%"#{positionName,jdbcType=VARCHAR}"%"
-    </select>
     <select id="selectAllByDepartmentId" resultType="cn.timelost.hr.vo.PositionSelectVo">
         select
         <include refid="Base_Column_List"/>

@@ -14,9 +14,7 @@ import java.util.List;
  */
 public interface PersonalService {
 
-    PageInfo<PersonalVo> findAll(int pageNum, int pageSize, int departmentId);
-
-    PageInfo<PersonalVo> search(String personalName, int pageNum, int pageSize);
+    PageInfo<PersonalVo> findAll(int pageNum, int pageSize, int departmentId, String personalName, int workStatus);
 
     List<PersonalSelectVo> findSelect();
 

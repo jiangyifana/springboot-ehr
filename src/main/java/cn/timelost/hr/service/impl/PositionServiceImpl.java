@@ -34,26 +34,13 @@ public class PositionServiceImpl implements PositionService {
     DepartmentService departmentService;
 
     @Override
-    public PageInfo<PositionVo> findAll(int pageNum, int pageSize, int departmentId) {
-        List<PositionVo> positions;
-        if (departmentId == 0) {
-            PageHelper.startPage(pageNum, pageSize);
-            positions = positionDao.selectAll(null);
-        } else {
-            departmentService.find(departmentId);
-            PageHelper.startPage(pageNum, pageSize);
-            positions = positionDao.selectAll(departmentId);
-        }
-        return new PageInfo<>(positions);
-    }
-
-    @Override
-    public PageInfo<PositionVo> search(String positionName, int pageNum, int pageSize) {
+    public PageInfo<PositionVo> findAll(int pageNum, int pageSize, int departmentId, String positionName) {
         if (ObjectUtils.isEmpty(positionName)) {
-            throw new BaseException(ResultEnum.POSITION_NOT_EXIST);
+            positionName = null;
         }
+        if (departmentId != 0) departmentService.find(departmentId);
         PageHelper.startPage(pageNum, pageSize);
-        List<PositionVo> positionVos = positionDao.selectAllByPositionNameLike(positionName);
+        List<PositionVo> positionVos = positionDao.selectAll(departmentId, positionName);
         return new PageInfo<>(positionVos);
     }
 

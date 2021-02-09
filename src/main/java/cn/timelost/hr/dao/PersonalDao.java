@@ -41,9 +41,7 @@ public interface PersonalDao {
      */
     int updateByPrimaryKey(Personal record);
 
-    List<PersonalVo> selectAllByDepartmentId(@Param("departmentId") Integer departmentId);
-
-    List<PersonalVo> selectAllByNameLike(@Param("name") String name);
+    List<PersonalVo> selectAll(@Param("departmentId") Integer departmentId, @Param("personalName") String personalName, @Param("workStatus") int workStatus);
 
     int deleteByIdIn(@Param("idList") Collection<Integer> idList);
 }

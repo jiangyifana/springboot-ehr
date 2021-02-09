@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
@@ -26,21 +27,15 @@ import java.util.Set;
 @RestController
 public class PositionController {
 
-    @Autowired
+    @Resource
     PositionService positionService;
 
     @GetMapping("/position/list")
     public PageInfo<PositionVo> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                     @RequestParam(value = "departmentId", required = false, defaultValue = "0") Integer departmentId) {
-        return positionService.findAll(page, size, departmentId);
-    }
-
-    @PostMapping("/position/search")
-    public PageInfo<PositionVo> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                       @RequestParam(value = "positionName") String positionName) {
-        return positionService.search(positionName, page, size);
+                                     @RequestParam(value = "departmentId", defaultValue = "0") Integer departmentId,
+                                     @RequestParam(value = "positionName", required = false) String positionName) {
+        return positionService.findAll(page, size, departmentId, positionName);
     }
 
     @GetMapping("/position/select/{departmentId}")
