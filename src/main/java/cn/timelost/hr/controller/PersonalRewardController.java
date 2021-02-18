@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,17 +28,14 @@ public class PersonalRewardController {
     public PageInfo<PersonalReward> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
                                          @RequestParam(value = "departmentName", required = false) String departmentName,
-                                         @RequestParam(value = "personalId", defaultValue = "0") Integer personalId) {
-        return personalRewardService.findAll(departmentName, personalId, page, size);
+                                         @RequestParam(value = "personalId", defaultValue = "0") Integer personalId,
+                                         @RequestParam(value = "year", defaultValue = "0") Integer year,
+                                         @RequestParam(value = "month", defaultValue = "0") Integer month) {
+        return personalRewardService.findAll(year, month, departmentName, personalId, page, size);
     }
-
-    @PostMapping("/reward/search")
-    public PageInfo<PersonalReward> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                           @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                           @RequestParam(value = "year") Integer year,
-                                           @RequestParam(value = "month") Integer month,
-                                           @RequestParam(value = "personalId", defaultValue = "0") Integer personalId) {
-        return personalRewardService.search(year, month, personalId, page, size);
+    @GetMapping("/reward/all")
+    public List<PersonalReward> all() {
+        return personalRewardService.all();
     }
 
     @GetMapping("/reward/{id}")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,6 +30,10 @@ public class PersonalSalaryController {
                                          @RequestParam(value = "month", defaultValue = "0") Integer month,
                                          @RequestParam(value = "personalId", defaultValue = "0") Integer personalId) {
         return personalSalaryService.findAll(year, month, departmentName, personalId, page, size);
+    }
+    @GetMapping("/salary/all")
+    public List<PersonalSalary> all() {
+        return personalSalaryService.all();
     }
 
     @GetMapping("/salary/{id}")

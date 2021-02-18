@@ -35,6 +35,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> departments = departmentDao.selectAll();
         return new PageInfo<>(departments);
     }
+    @Override
+    public List<Department> all() {
+        return departmentDao.selectAll();
+    }
 
     @Override
     public List<DepartmentSelectVo> findSelect() {

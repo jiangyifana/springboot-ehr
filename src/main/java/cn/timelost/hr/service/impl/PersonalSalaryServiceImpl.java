@@ -41,6 +41,10 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
         List<PersonalSalary> personalSalaries = personalSalaryDao.selectAll(year, month, departmentName, personalId);
         return new PageInfo<>(personalSalaries);
     }
+    @Override
+    public List<PersonalSalary> all() {
+        return personalSalaryDao.selectAll(0, 0, null, 0);
+    }
 
     @Override
     public PersonalSalary find(int id) {

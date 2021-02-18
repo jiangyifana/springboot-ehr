@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: Jyf
@@ -14,9 +15,8 @@ import java.util.Date;
  */
 public interface PersonalRewardService {
 
-    PageInfo<PersonalReward> findAll(String departmentName, int personalId, int pageNum, int pageSize);
-
-    PageInfo<PersonalReward> search(int year, int month, int personalId, int pageNum, int pageSize);
+    PageInfo<PersonalReward> findAll(int year,int month,String departmentName, int personalId, int pageNum, int pageSize);
+    List<PersonalReward> all();
 
     PersonalReward find(int id);
 

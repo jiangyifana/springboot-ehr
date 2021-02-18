@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +27,10 @@ public class RecruitmentController {
                                       @RequestParam(value = "departmentName", required = false) String departmentName,
                                       @RequestParam(value = "recruitStatus", defaultValue = "0") Integer recruitStatus) {
         return recruitmentService.findAll(departmentName, recruitStatus, page, size);
+    }
+    @GetMapping("/recruit/all")
+    public List<Recruitment> list() {
+        return recruitmentService.all();
     }
 
     @GetMapping("/recruit/{id}")

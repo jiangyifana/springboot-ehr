@@ -46,6 +46,11 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
+    public List<PersonalVo> All() {
+        return personalDao.selectAll(0, null, 0);
+    }
+
+    @Override
     public List<PersonalSelectVo> findSelect() {
         List<PersonalVo> personalVos = personalDao.selectAll(0, null, 0);
         List<PersonalSelectVo> collect = personalVos.stream().map(e -> {

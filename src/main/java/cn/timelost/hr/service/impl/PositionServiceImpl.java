@@ -45,6 +45,11 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    public List<PositionVo> all() {
+        return positionDao.selectAll(0, null);
+    }
+
+    @Override
     public Position find(int id) {
         Position position = positionDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(position)) {

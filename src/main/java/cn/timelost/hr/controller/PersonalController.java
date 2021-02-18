@@ -32,6 +32,11 @@ public class PersonalController {
         return personalService.findAll(page, size, departmentId, personalName, workStatus);
     }
 
+    @GetMapping("/personal/all")
+    public List<PersonalVo> all() {
+        return personalService.All();
+    }
+    
     @GetMapping("/personal/select")
     public List<PersonalSelectVo> findSelect() {
         return personalService.findSelect();

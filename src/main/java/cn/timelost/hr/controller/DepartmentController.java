@@ -34,6 +34,11 @@ public class DepartmentController {
         return departmentService.findAll(page, size);
     }
 
+    @GetMapping("/department/all")
+    public List<Department> all() {
+        return departmentService.all();
+    }
+
     @PostMapping("/department/search")
     public PageInfo<Department> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                        @RequestParam(value = "size", defaultValue = "10") Integer size,

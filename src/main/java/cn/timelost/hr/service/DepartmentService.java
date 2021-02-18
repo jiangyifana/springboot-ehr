@@ -16,6 +16,7 @@ import java.util.List;
 public interface DepartmentService {
 
     PageInfo<Department> findAll(int pageNum, int pageSize);
+    List<Department> all();
 
     List<DepartmentSelectVo> findSelect();
 

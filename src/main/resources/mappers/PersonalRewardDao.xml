@@ -147,23 +147,13 @@
         from personal_reward
         <where>
             <if test="departmentName!=null">
-                department_name = #{departmentName,jdbcType=VARCHAR}
+                and department_name = #{departmentName,jdbcType=VARCHAR}
             </if>
             <if test="personalId!=0">
                 and personal_id = #{personalId,jdbcType=INTEGER}
             </if>
-        </where>
-    </select>
-    <select id="selectAllByDate" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from personal_reward
-        <where>
             <if test="year!=0 and month!=0">
-                YEAR(reward_date)=#{year} and MONTH(reward_date)=#{month}
-            </if>
-            <if test="personalId!=0">
-                and personal_id=#{personalId}
+                and YEAR(reward_date)=#{year} and MONTH(reward_date)=#{month}
             </if>
         </where>
     </select>

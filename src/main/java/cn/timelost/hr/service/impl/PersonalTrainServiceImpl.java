@@ -46,6 +46,10 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
         List<PersonalTrain> personalTrains = personalTrainDao.selectAll(departmentName, personalId, beginDate, endDate);
         return new PageInfo<>(personalTrains);
     }
+    @Override
+    public List<PersonalTrain> all() {
+        return personalTrainDao.selectAll(null, 0, null, null);
+    }
 
     @Override
     public PersonalTrain find(int id) {

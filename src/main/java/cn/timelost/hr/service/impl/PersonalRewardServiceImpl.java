@@ -31,20 +31,17 @@ public class PersonalRewardServiceImpl implements PersonalRewardService {
     PersonalService personalService;
 
     @Override
-    public PageInfo<PersonalReward> findAll(String departmentName, int personalId, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public PageInfo<PersonalReward> findAll(int year, int month, String departmentName, int personalId, int pageNum, int pageSize) {
         if (ObjectUtils.isEmpty(departmentName)) {
             departmentName = null;
         }
-        List<PersonalReward> personalRewards = personalRewardDao.selectAll(departmentName, personalId);
+        PageHelper.startPage(pageNum, pageSize);
+        List<PersonalReward> personalRewards = personalRewardDao.selectAll(year, month, departmentName, personalId);
         return new PageInfo<>(personalRewards);
     }
-
     @Override
-    public PageInfo<PersonalReward> search(int year, int month, int personalId, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<PersonalReward> personalRewards = personalRewardDao.selectAllByDate(year, month, personalId);
-        return new PageInfo<>(personalRewards);
+    public List<PersonalReward> all() {
+        return personalRewardDao.selectAll(0, 0, null, 0);
     }
 
     @Override

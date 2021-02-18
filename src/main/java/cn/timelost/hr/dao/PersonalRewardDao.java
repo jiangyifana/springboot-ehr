@@ -43,9 +43,8 @@ public interface PersonalRewardDao {
      */
     int updateByPrimaryKey(PersonalReward record);
 
-    List<PersonalReward> selectAll(@Param("departmentName") String departmentName, @Param("personalId") Integer personalId);
-
-    List<PersonalReward> selectAllByDate(@Param("year") Integer year, @Param("month") Integer month, @Param("personalId") Integer personalId);
+    List<PersonalReward> selectAll(@Param("year") int year, @Param("month") int month,
+                                   @Param("departmentName") String departmentName, @Param("personalId") int personalId);
 
     int deleteByIdIn(@Param("idList") Collection<Integer> idList);
 }

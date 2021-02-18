@@ -38,6 +38,11 @@ public class PositionController {
         return positionService.findAll(page, size, departmentId, positionName);
     }
 
+    @GetMapping("/position/all")
+    public List<PositionVo> all() {
+        return positionService.all();
+    }
+
     @GetMapping("/position/select/{departmentId}")
     public List<PositionSelectVo> selectList(@PathVariable Integer departmentId) {
         return positionService.findSelect(departmentId);

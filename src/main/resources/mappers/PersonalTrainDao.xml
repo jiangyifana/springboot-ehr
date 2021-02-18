@@ -165,13 +165,6 @@
         remake = #{remake,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <!--    <select id="selectAllByBeginDateAndEndDate" resultMap="BaseResultMap">-->
-    <!--        select-->
-    <!--        <include refid="Base_Column_List"/>-->
-    <!--        from personal_train-->
-    <!--        where begin_date BETWEEN #{beginDate} and #{endDate}-->
-    <!--        or end_date BETWEEN #{beginDate} and #{endDate}-->
-    <!--    </select>-->
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -184,8 +177,8 @@
                 and personal_id =#{personalId}
             </if>
             <if test="beginDate!=null">
-                and begin_date BETWEEN #{beginDate} and #{endDate}
-                or end_date BETWEEN #{beginDate} and #{endDate}
+                and (begin_date BETWEEN #{beginDate} and #{endDate}
+                or end_date BETWEEN #{beginDate} and #{endDate})
             </if>
         </where>
     </select>

@@ -6,6 +6,7 @@ import cn.timelost.hr.vo.input.PersonalSalaryForm;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author: Jyf
@@ -13,6 +14,7 @@ import java.util.Collection;
  */
 public interface PersonalSalaryService {
     PageInfo<PersonalSalary> findAll(int year, int month, String departmentName, int personalId, int pageNum, int pageSize);
+    List<PersonalSalary> all();
 
     PersonalSalary find(int id);
 

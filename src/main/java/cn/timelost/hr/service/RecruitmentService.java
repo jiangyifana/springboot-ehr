@@ -5,6 +5,7 @@ import cn.timelost.hr.vo.input.RecruitmentForm;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author: Jyf
@@ -12,6 +13,7 @@ import java.util.Collection;
  */
 public interface RecruitmentService {
     PageInfo<Recruitment> findAll(String departmentName, int recruitStatus, int pageNum, int pageSize);
+    List<Recruitment> all();
 
     Recruitment find(int id);
 

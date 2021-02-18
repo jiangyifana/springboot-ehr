@@ -29,8 +29,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Resource
     RecruitmentDao recruitmentDao;
-    @Resource
-    PersonalService personalService;
 
     @Override
     public PageInfo<Recruitment> findAll(String departmentName, int recruitStatus, int pageNum, int pageSize) {
@@ -40,6 +38,10 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         }
         List<Recruitment> personalSalaries = recruitmentDao.selectAll(departmentName, recruitStatus);
         return new PageInfo<>(personalSalaries);
+    }
+    @Override
+    public List<Recruitment> all() {
+        return recruitmentDao.selectAll(null, 0);
     }
 
     @Override

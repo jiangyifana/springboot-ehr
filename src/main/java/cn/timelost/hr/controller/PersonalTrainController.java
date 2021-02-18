@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,13 +35,10 @@ public class PersonalTrainController {
         return personalTrainService.findAll(page, size, departmentName, personalId, beginDate, endDate);
     }
 
-//    @PostMapping("/train/search")
-//    public PageInfo<PersonalTrain> search(@RequestParam(value = "page", defaultValue = "1") Integer page,
-//                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
-//                                          @RequestParam(value = "beginDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
-//                                          @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-//        return personalTrainService.searchByDate(beginDate, endDate, page, size);
-//    }
+    @GetMapping("/train/all")
+    public List<PersonalTrain> all() {
+        return personalTrainService.all();
+    }
 
     @GetMapping("/train/{id}")
     public PersonalTrain findById(@PathVariable Integer id) {
