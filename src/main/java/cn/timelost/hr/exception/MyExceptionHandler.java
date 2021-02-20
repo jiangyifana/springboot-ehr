@@ -3,6 +3,8 @@ package cn.timelost.hr.exception;
 import cn.timelost.hr.enums.ResultEnum;
 import cn.timelost.hr.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +30,6 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ResultVo notValidExceptionHandle(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         Objects.requireNonNull(bindingResult.getFieldError());
@@ -37,12 +38,23 @@ public class MyExceptionHandler {
                 bindingResult.getFieldError().getDefaultMessage());
     }
 
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResultVo AuthenticationException(AuthenticationException e) {
+        log.error("AuthenticationException:{}", e.getMessage());
+        return ResultVo.fail(ResultEnum.AUTHENTICATE_FAIL);
+    }
+
+    @ExceptionHandler(value = AuthorizationException.class)
+    public ResultVo AuthorizationException(AuthorizationException e) {
+        log.error("AuthorizationException:{}", e.getMessage());
+        return ResultVo.fail(ResultEnum.AUTHORIZATION_FAIL);
+    }
+
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    @ResponseBody
     public ResultVo SQLIntegrity(SQLIntegrityConstraintViolationException e) {
         log.error(e.getMessage());
         log.error(e.getSQLState());
-        return ResultVo.fail(ResultEnum.PARAM_ERROR,"请先删除已有数据!");
+        return ResultVo.fail(ResultEnum.PARAM_ERROR, "请先删除已有数据!");
     }
 
 //    @ExceptionHandler(Exception.class)
