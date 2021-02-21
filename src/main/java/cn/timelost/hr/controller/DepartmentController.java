@@ -6,6 +6,7 @@ import cn.timelost.hr.vo.DepartmentSelectVo;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.DepartmentForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,24 +58,28 @@ public class DepartmentController {
     }
 
     @PostMapping("/department")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid DepartmentForm department) {
         departmentService.insert(department);
         return ResultVo.success();
     }
 
     @PutMapping("/department/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody DepartmentForm department, @PathVariable Integer id) {
         departmentService.updateById(id, department);
         return ResultVo.success();
     }
 
     @DeleteMapping("/department/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         departmentService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/department")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         departmentService.deleteByIdIn(id);
         return ResultVo.success();

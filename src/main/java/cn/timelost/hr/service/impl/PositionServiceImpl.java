@@ -14,6 +14,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -26,6 +29,7 @@ import java.util.List;
  * @Date: 2021/1/25 18:35
  */
 @Service
+@CacheConfig(cacheNames = "position")
 public class PositionServiceImpl implements PositionService {
 
     @Resource
@@ -34,6 +38,7 @@ public class PositionServiceImpl implements PositionService {
     DepartmentService departmentService;
 
     @Override
+    @Cacheable(key = "#departmentId+'-'+#positionName+'-'+#workStatus+'-'+#pageNum+'-'+#pageSize")
     public PageInfo<PositionVo> findAll(int pageNum, int pageSize, int departmentId, String positionName) {
         if (ObjectUtils.isEmpty(positionName)) {
             positionName = null;
@@ -45,6 +50,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    @Cacheable(key = "#root.methodName")
     public List<PositionVo> all() {
         return positionDao.selectAll(0, null);
     }
@@ -59,6 +65,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void insert(PositionForm positionForm) {
         departmentService.find(positionForm.getDepartmentId());
         Position position = new Position();
@@ -67,6 +74,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteById(Integer id) {
         Position position = positionDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(position)) {
@@ -76,11 +84,13 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteByIdIn(Collection<Integer> idList) {
         positionDao.deleteByIdIn(idList);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateById(Integer id, PositionForm positionForm) {
         Position position = positionDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(positionForm.getDepartmentId())) {

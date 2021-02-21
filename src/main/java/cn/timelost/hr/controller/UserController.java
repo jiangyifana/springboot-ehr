@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -76,6 +77,13 @@ public class UserController {
         userService.insert(user);
         String token = JWTUtils.sign(user.getUsername(), password);
         return ResultVo.success(token);
+    }
+
+    @GetMapping("/user/get")
+    public ResultVo get(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("Authorization");
+        String username = JWTUtils.getUsername(token);
+        return ResultVo.success(username);
     }
 
     @GetMapping("/user/list")

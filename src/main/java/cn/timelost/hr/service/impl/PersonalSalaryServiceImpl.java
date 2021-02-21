@@ -12,6 +12,10 @@ import cn.timelost.hr.vo.input.PersonalSalaryForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -25,6 +29,7 @@ import java.util.List;
  * @Date: 2021/2/7 9:58
  */
 @Service
+@CacheConfig(cacheNames = "salary")
 public class PersonalSalaryServiceImpl implements PersonalSalaryService {
 
     @Resource
@@ -33,6 +38,7 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
     PersonalService personalService;
 
     @Override
+    @Cacheable(key = "#year+'-'+#month+'-'+#departmentName+'-'+#personalId+'-'+#pageNum+'-'+#pageSize")
     public PageInfo<PersonalSalary> findAll(int year, int month, String departmentName, int personalId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         if (ObjectUtils.isEmpty(departmentName)) {
@@ -41,7 +47,9 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
         List<PersonalSalary> personalSalaries = personalSalaryDao.selectAll(year, month, departmentName, personalId);
         return new PageInfo<>(personalSalaries);
     }
+
     @Override
+    @Cacheable(key = "#root.methodName")
     public List<PersonalSalary> all() {
         return personalSalaryDao.selectAll(0, 0, null, 0);
     }
@@ -56,6 +64,7 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void insert(PersonalSalaryForm personalSalaryForm) {
         PersonalVo personalVo = personalService.find(personalSalaryForm.getPersonalId());
         PersonalSalary personalSalary = new PersonalSalary();
@@ -79,6 +88,7 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteById(Integer id) {
         PersonalSalary personalSalary = personalSalaryDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(personalSalary)) {
@@ -88,11 +98,13 @@ public class PersonalSalaryServiceImpl implements PersonalSalaryService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteByIdIn(Collection<Integer> idList) {
         personalSalaryDao.deleteByIdIn(idList);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateById(Integer id, PersonalSalaryForm personalSalaryForm) {
         PersonalSalary personalSalary = personalSalaryDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(personalSalary)) {

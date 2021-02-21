@@ -11,6 +11,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -24,30 +28,36 @@ import java.util.List;
  * @Date: 2021/1/24 21:52
  */
 @Service
+@CacheConfig(cacheNames = "department")
 public class DepartmentServiceImpl implements DepartmentService {
 
     @Resource
     DepartmentDao departmentDao;
 
     @Override
+    @Cacheable(key = "#pageNum+'-'+#pageSize")
     public PageInfo<Department> findAll(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Department> departments = departmentDao.selectAll();
         return new PageInfo<>(departments);
     }
+
     @Override
+    @Cacheable(key = "#root.methodName")
     public List<Department> all() {
         return departmentDao.selectAll();
     }
 
     @Override
+    @Cacheable(key = "#root.methodName")
     public List<DepartmentSelectVo> findSelect() {
         return departmentDao.selectAllSelect();
     }
 
     @Override
+    @Cacheable(key = "#departmentName+'-'+#pageNum+'-'+#pageSize")
     public PageInfo<Department> search(String departmentName, int pageNum, int pageSize) {
-        if(ObjectUtils.isEmpty(departmentName)){
+        if (ObjectUtils.isEmpty(departmentName)) {
             throw new BaseException(ResultEnum.DEPARTMENT_NOT_EXIST);
         }
         PageHelper.startPage(pageNum, pageSize);
@@ -65,6 +75,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void insert(DepartmentForm record) {
         Department department = new Department();
         BeanUtils.copyProperties(record, department);
@@ -72,6 +83,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteById(Integer id) {
         Department department = departmentDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(department)) {
@@ -81,11 +93,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteByIdIn(Collection<Integer> idList) {
         departmentDao.deleteByIdIn(idList);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateById(Integer id, DepartmentForm record) {
         Department department = departmentDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(department)) {

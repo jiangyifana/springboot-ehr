@@ -17,6 +17,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,6 +33,7 @@ import java.util.List;
  * @Date: 2021/2/2 16:51
  */
 @Service
+@CacheConfig(cacheNames = "train")
 public class PersonalTrainServiceImpl implements PersonalTrainService {
 
     @Resource
@@ -38,6 +42,7 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     PersonalService personalService;
 
     @Override
+    @Cacheable(key = "#departmentName+'-'+#personalId+'-'+#beginDate+'-'+#endDate+'-'+#pageNum+'-'+#pageSize")
     public PageInfo<PersonalTrain> findAll(int pageNum, int pageSize, String departmentName, int personalId, Date beginDate, Date endDate) {
         if (ObjectUtils.isEmpty(departmentName)) {
             departmentName = null;
@@ -46,7 +51,9 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
         List<PersonalTrain> personalTrains = personalTrainDao.selectAll(departmentName, personalId, beginDate, endDate);
         return new PageInfo<>(personalTrains);
     }
+
     @Override
+    @Cacheable(key = "#root.methodName")
     public List<PersonalTrain> all() {
         return personalTrainDao.selectAll(null, 0, null, null);
     }
@@ -61,6 +68,7 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void insert(PersonalTrainForm personalTrainForm) {
         PersonalVo personalVo = personalService.find(personalTrainForm.getPersonalId());
         PersonalTrain personalTrain = new PersonalTrain();
@@ -72,6 +80,7 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteById(Integer id) {
         PersonalTrain personalTrain = personalTrainDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(personalTrain)) {
@@ -81,11 +90,13 @@ public class PersonalTrainServiceImpl implements PersonalTrainService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteByIdIn(Collection<Integer> idList) {
         personalTrainDao.deleteByIdIn(idList);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateById(Integer id, PersonalTrainForm personalTrainForm) {
         PersonalTrain personalTrain = personalTrainDao.selectByPrimaryKey(id);
         if (ObjectUtils.isEmpty(personalTrain)) {

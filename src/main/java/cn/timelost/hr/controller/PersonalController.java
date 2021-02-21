@@ -6,6 +6,7 @@ import cn.timelost.hr.vo.PersonalVo;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PersonalForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,24 +49,28 @@ public class PersonalController {
     }
 
     @PostMapping("/personal")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid PersonalForm personalForm) {
         personalService.insert(personalForm);
         return ResultVo.success();
     }
 
     @PutMapping("/personal/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody PersonalForm personalForm, @PathVariable Integer id) {
         personalService.updateById(id, personalForm);
         return ResultVo.success();
     }
 
     @DeleteMapping("/personal/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         personalService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/personal")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         personalService.deleteByIdIn(id);
         return ResultVo.success();

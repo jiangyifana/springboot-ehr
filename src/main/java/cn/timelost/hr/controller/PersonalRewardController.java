@@ -5,6 +5,7 @@ import cn.timelost.hr.service.PersonalRewardService;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PersonalRewardForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,24 +45,28 @@ public class PersonalRewardController {
     }
 
     @PostMapping("/reward")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid PersonalRewardForm personalRewardForm) {
         personalRewardService.insert(personalRewardForm);
         return ResultVo.success();
     }
 
     @PutMapping("/reward/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody @Valid PersonalRewardForm personalRewardForm, @PathVariable Integer id) {
         personalRewardService.updateById(id, personalRewardForm);
         return ResultVo.success();
     }
 
     @DeleteMapping("/reward/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         personalRewardService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/reward")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         personalRewardService.deleteByIdIn(id);
         return ResultVo.success();

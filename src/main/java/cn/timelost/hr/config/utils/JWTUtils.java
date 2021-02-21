@@ -23,7 +23,7 @@ public class JWTUtils {
     /**
      * 过期时间2小时
      */
-    private static final long EXPIRE_TIME = 10 * 60 * 1000;
+    private static final long EXPIRE_TIME = 60 * 60 * 1000;
 
     /**
      * 生成签名,2min后过期

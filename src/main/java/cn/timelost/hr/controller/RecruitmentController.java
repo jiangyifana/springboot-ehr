@@ -5,6 +5,7 @@ import cn.timelost.hr.service.RecruitmentService;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.RecruitmentForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,24 +40,28 @@ public class RecruitmentController {
     }
 
     @PostMapping("/recruit")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid RecruitmentForm recruitmentForm) {
         recruitmentService.insert(recruitmentForm);
         return ResultVo.success();
     }
 
     @PutMapping("/recruit/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody RecruitmentForm recruitmentForm, @PathVariable Integer id) {
         recruitmentService.updateById(id, recruitmentForm);
         return ResultVo.success();
     }
 
     @DeleteMapping("/recruit/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         recruitmentService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/recruit")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         recruitmentService.deleteByIdIn(id);
         return ResultVo.success();

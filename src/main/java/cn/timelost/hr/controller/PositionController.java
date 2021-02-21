@@ -8,6 +8,7 @@ import cn.timelost.hr.vo.PositionVo;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PositionForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,24 +55,28 @@ public class PositionController {
     }
 
     @PostMapping("/position")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid PositionForm Position) {
         positionService.insert(Position);
         return ResultVo.success();
     }
 
     @PutMapping("/position/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody PositionForm Position, @PathVariable Integer id) {
         positionService.updateById(id, Position);
         return ResultVo.success();
     }
 
     @DeleteMapping("/position/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         positionService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/position")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         positionService.deleteByIdIn(id);
         return ResultVo.success();

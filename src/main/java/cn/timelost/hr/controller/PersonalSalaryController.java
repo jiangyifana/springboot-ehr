@@ -5,6 +5,7 @@ import cn.timelost.hr.service.PersonalSalaryService;
 import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PersonalSalaryForm;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -42,24 +43,28 @@ public class PersonalSalaryController {
     }
 
     @PostMapping("/salary")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid PersonalSalaryForm personalSalaryForm) {
         personalSalaryService.insert(personalSalaryForm);
         return ResultVo.success();
     }
 
     @PutMapping("/salary/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody @Valid PersonalSalaryForm personalSalaryForm, @PathVariable Integer id) {
         personalSalaryService.updateById(id, personalSalaryForm);
         return ResultVo.success();
     }
 
     @DeleteMapping("/salary/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         personalSalaryService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/salary")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         personalSalaryService.deleteByIdIn(id);
         return ResultVo.success();

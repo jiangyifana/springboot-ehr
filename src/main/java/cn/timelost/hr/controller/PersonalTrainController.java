@@ -6,6 +6,7 @@ import cn.timelost.hr.vo.ResultVo;
 import cn.timelost.hr.vo.input.PersonalTrainForm;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,24 +47,28 @@ public class PersonalTrainController {
     }
 
     @PostMapping("/train")
+    @RequiresRoles("admin")
     public ResultVo insert(@RequestBody @Valid PersonalTrainForm personalTrainForm) {
         personalTrainService.insert(personalTrainForm);
         return ResultVo.success();
     }
 
     @PutMapping("/train/{id}")
+    @RequiresRoles("admin")
     public ResultVo update(@RequestBody @Valid PersonalTrainForm personalTrainForm, @PathVariable Integer id) {
         personalTrainService.updateById(id, personalTrainForm);
         return ResultVo.success();
     }
 
     @DeleteMapping("/train/{id}")
+    @RequiresRoles("admin")
     public ResultVo delete(@PathVariable Integer id) {
         personalTrainService.deleteById(id);
         return ResultVo.success();
     }
 
     @DeleteMapping("/train")
+    @RequiresRoles("admin")
     public ResultVo deleteIdIn(@RequestBody Set<Integer> id) {
         personalTrainService.deleteByIdIn(id);
         return ResultVo.success();
