@@ -10,7 +10,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Random;
 

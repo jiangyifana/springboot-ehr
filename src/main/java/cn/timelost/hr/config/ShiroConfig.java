@@ -109,6 +109,9 @@ public class ShiroConfig {
     @Bean
     public RedisManager redisManager() {
         RedisManager manager = new RedisManager();
+        manager.setHost("120.76.57.45:6379");
+        manager.setPassword("111111");
+        manager.setTimeout(30 * 1000);
         return manager;
     }
 

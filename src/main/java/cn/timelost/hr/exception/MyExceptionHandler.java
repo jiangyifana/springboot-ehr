@@ -41,7 +41,7 @@ public class MyExceptionHandler {
     @ExceptionHandler(value = AuthenticationException.class)
     public ResultVo AuthenticationException(AuthenticationException e) {
         log.error("AuthenticationException:{}", e.getMessage());
-        return ResultVo.fail(ResultEnum.AUTHENTICATE_FAIL);
+        return ResultVo.fail(ResultEnum.AUTHENTICATE_FAIL, e.getMessage());
     }
 
     @ExceptionHandler(value = AuthorizationException.class)

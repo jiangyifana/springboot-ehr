@@ -87,6 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
+    @RequiresRoles("admin")
     public PageInfo<UserVo> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                  @RequestParam(value = "size", defaultValue = "10") Integer size) {
         return userService.findList(page, size);
