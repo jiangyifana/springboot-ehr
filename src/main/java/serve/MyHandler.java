@@ -1,5 +1,6 @@
-package cn.timelost.hr;
+package serve;
 
+import cn.timelost.hr.Application;
 import com.qcloud.scf.runtime.AbstractSpringHandler;
 
 /**
