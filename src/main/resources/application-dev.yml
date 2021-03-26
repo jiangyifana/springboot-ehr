@@ -1,23 +1,22 @@
-#测试环境
+#开发环境
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://120.76.57.45:3306/ehr?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: ehr
-    password: Ta2fC6HNJCxcx3PD
+    url: jdbc:mysql://localhost:3306/ehr?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: admin
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
     default-property-inclusion: NON_NULL
   redis:
-    password: 111111
     port: 6379
-    host: 120.76.57.45
+    host: 127.0.0.1
     timeout: 60
 mybatis:
   mapper-locations: classpath:mappers/*Dao.xml
   configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 server:
   port: 8080
