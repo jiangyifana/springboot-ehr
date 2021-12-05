@@ -46,7 +46,7 @@
 			"target": "_self",
 			"child": [{
 					"title": "招聘管理",
-					"href": "page/Recruitment.html",
+					"href": "page/recruitment.html",
 					"icon": "fa fa-user-plus",
 					"target": "_self"
 				},
