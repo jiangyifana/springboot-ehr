@@ -28,3 +28,7 @@ https://image.timelost.cn/系统演示视频.mp4
 #### 演示地址
 
 http://ehr.timelost.cn/
+
+#### 系统截图
+
+![系统截图](https://ae03.alicdn.com/kf/H6c3c4065cc6d46ed8791d399822ad72fV.png)
