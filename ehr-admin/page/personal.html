@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>员工管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../../layuimini/lib/layui-v2.5.5/css/layui.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="../../layuimini/css/public.css" media="all" />
+  </head>
+
+  <body>
+    <div class="layuimini-container">
+      <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+          <legend>搜索信息</legend>
+          <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">部门选择</label>
+                  <div class="layui-input-inline">
+                    <select
+                      name="departmentId"
+                      id="selectId"
+                      lay-filter="select"
+                    >
+                      <option value="0">请选择部门</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">工作状态:</label>
+                  <div class="layui-input-inline">
+                    <select name="workStatus" id="workStatus">
+                      <option value="0">全部</option>
+                      <option value="1">正式员工</option>
+                      <option value="2">试用期</option>
+                      <option value="3">实习期</option>
+                      <option value="4">已离职</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">员工姓名</label>
+                  <div class="layui-input-inline">
+                    <input
+                      id="personalName"
+                      type="text"
+                      name="personalName"
+                      autocomplete="off"
+                      class="layui-input"
+                    />
+                  </div>
+                </div>
+
+                <div class="layui-inline">
+                  <button
+                    type="submit"
+                    class="layui-btn layui-btn-primary"
+                    lay-submit
+                    lay-filter="data-search-btn"
+                  >
+                    <i class="layui-icon"></i> 搜 索
+                  </button>
+                </div>
+                <div class="layui-inline">
+                  <a
+                    type="button"
+                    class="layui-btn layui-btn-primary"
+                    id="data-reset-btn"
+                  >
+                    <i class="layui-icon"></i> 重 置
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button
+              class="layui-btn layui-btn-normal layui-btn-sm data-add-btn"
+              lay-event="add"
+            >
+              添加
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn"
+              lay-event="delete"
+            >
+              删除
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-sucess"
+              lay-event="refresh"
+            >
+              刷新
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-warm"
+              lay-event="export"
+            >
+              导出全部数据
+            </button>
+          </div>
+        </script>
+
+        <table
+          class="layui-hide"
+          id="currentTableId"
+          lay-filter="currentTableFilter"
+        ></table>
+
+        <script type="text/html" id="currentTableBar">
+          <div
+            class="layui-btn layui-btn-normal layui-btn-xs data-count-edit"
+            lay-event="edit"
+          >
+            编辑
+          </div>
+          <div
+            class="layui-btn layui-btn-xs layui-btn-danger data-count-delete"
+            lay-event="delete"
+          >
+            删除
+          </div>
+        </script>
+      </div>
+    </div>
+
+    <script type="text/html" id="userEditDialog">
+      <form
+        id="userEditForm"
+        lay-filter="userEditForm"
+        class="layui-form model-form"
+        style="padding-left:20px;margin-top: 20px;"
+      >
+        <input name="id" type="hidden" />
+        <div class="layui-row">
+          <div class="layui-col-md12">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label layui-form-required"
+                  >姓名:</label
+                >
+                <div class="layui-input-inline">
+                  <input
+                    name="name"
+                    placeholder="请输入姓名"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="required"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">出生日期:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="text"
+                    name="birthday"
+                    id="birty"
+                    autocomplete="off"
+                    class="layui-input"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label layui-form-required"
+                  >联系电话:</label
+                >
+                <div class="layui-input-inline">
+                  <input
+                    name="phone"
+                    placeholder="请输入联系电话"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="phone"
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">邮箱:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="email"
+                    placeholder="请输入电子邮箱"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="email"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">性别:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="1"
+                    title="男"
+                    checked
+                  />
+                  <input type="radio" name="gender" value="2" title="女" />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">身份证号:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="identity"
+                    placeholder="请输入身份证号"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="identity"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">学历:</label>
+                <div class="layui-input-inline">
+                  <select name="education" id="education">
+                    <option value="初中">初中</option>
+                    <option value="高中">高中</option>
+                    <option value="大专">大专</option>
+                    <option value="本科">本科</option>
+                    <option value="硕士">硕士</option>
+                    <option value="博士">博士</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">毕业院校:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="school"
+                    placeholder="请输入毕业院校"
+                    class="layui-input"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">所属部门:</label>
+                <div class="layui-input-inline">
+                  <select
+                    name="departmentId"
+                    id="departmentId"
+                    lay-filter="selectDepartment"
+                  ></select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">所属岗位:</label>
+                <div class="layui-input-inline">
+                  <select name="positionId" id="positionId"></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">工作状态:</label>
+                <div class="layui-input-inline">
+                  <select name="workStatus">
+                    <option value="1">正式员工</option>
+                    <option value="2">试用期</option>
+                    <option value="3">实习期</option>
+                    <option value="4">已离职</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div>
+                <label class="layui-form-label">员工图片:</label>
+                <input
+                  id="imgUrl"
+                  name="imgUrl"
+                  type="text"
+                  hidden="hidden"
+                  value=""
+                />
+              </div>
+              <div class="layui-upload">
+                <button
+                  type="button"
+                  class="layui-btn layui-btn-danger"
+                  id="test1"
+                >
+                  <i class="layui-icon"></i>上传图片
+                </button>
+                <div class="layui-upload-list" style="margin-left:100px">
+                  <img
+                    class="layui-upload-img"
+                    id="demoPic"
+                    style="weight:150px;height:150px;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-input-block">
+          <button class="layui-btn" lay-filter="userEditSubmit" lay-submit>
+            保存
+          </button>
+          <button
+            class="layui-btn layui-btn-primary"
+            type="button"
+            ew-event="closeDialog"
+            id="Cancel"
+          >
+            取消
+          </button>
+        </div>
+      </form>
+    </script>
+
+    <script
+      src="../../layuimini/lib/layui-v2.5.5/layui.js"
+      charset="utf-8"
+    ></script>
+    <script src="../../layuimini/js/lay-config.js" charset="utf-8"></script>
+
+    <script>
+      layui.use(
+        ['layer', 'form', 'table', 'laydate', 'upload', 'common', 'excel'],
+        function () {
+          var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table,
+            upload = layui.upload,
+            common = layui.common,
+            excel = layui.excel
+
+          tableIns = table.render({
+            elem: '#currentTableId',
+            url: common.api + '/personal/list',
+            where: { token: common.getToken },
+            toolbar: '#toolbarDemo',
+            title: '员工信息',
+            limits: [1, 5, 10, 15, 20],
+            limit: 15,
+            page: true,
+            skin: 'row',
+            even: true,
+            cols: [
+              [
+                {
+                  type: 'checkbox',
+                  width: 50,
+                },
+                {
+                  field: 'id',
+                  title: '编号',
+                  width: 80,
+                  sort: true,
+                  align: 'center',
+                },
+                {
+                  field: 'name',
+                  width: 100,
+                  title: '姓名',
+                  align: 'center',
+                },
+                {
+                  field: 'gender',
+                  width: 80,
+                  title: '性别',
+                  align: 'center',
+                  templet: function (d) {
+                    if (d.gender == 1) {
+                      return '男'
+                    } else if (d.gender == 2) {
+                      return '女'
+                    }
+                    return ''
+                  },
+                },
+                {
+                  field: 'birthday',
+                  width: 80,
+                  title: '年龄',
+                  align: 'center',
+                  templet: function (d) {
+                    if (d.birthday != undefined) {
+                      var birthday = d.birthday
+                      var birthDayTime = new Date(birthday).getTime()
+                      var nowTime = new Date().getTime()
+                      return Math.ceil((nowTime - birthDayTime) / 31536000000)
+                    }
+                    return ''
+                  },
+                  sort: true,
+                },
+                {
+                  field: 'phone',
+                  width: 120,
+                  title: '联系电话',
+                  align: 'center',
+                },
+                {
+                  field: 'email',
+                  width: 170,
+                  title: '邮箱',
+                  align: 'center',
+                },
+                {
+                  field: 'identity',
+                  width: 170,
+                  title: '身份证号',
+                  align: 'center',
+                },
+                {
+                  field: 'education',
+                  width: 100,
+                  title: '学历',
+                  align: 'center',
+                },
+                {
+                  field: 'school',
+                  width: 150,
+                  title: '毕业学校',
+                  align: 'center',
+                },
+                {
+                  field: 'departmentName',
+                  width: 150,
+                  title: '部门',
+                  align: 'center',
+                },
+                {
+                  field: 'positionName',
+                  width: 150,
+                  title: '岗位',
+                  align: 'center',
+                },
+                {
+                  field: 'workStatus',
+                  width: 100,
+                  title: '工作状态',
+                  align: 'center',
+                  templet: function (d) {
+                    switch (d.workStatus) {
+                      case 1:
+                        return '正式员工'
+                        break
+                      case 2:
+                        return '试用期'
+                        break
+                      case 3:
+                        return '实习期'
+                        break
+                      case 4:
+                        return '已离职'
+                        break
+                      default:
+                        return ''
+                        break
+                    }
+                  },
+                },
+                {
+                  title: '操作',
+                  minWidth: 150,
+                  toolbar: '#currentTableBar',
+                  align: 'center',
+                },
+              ],
+            ],
+            parseData: function (res) {
+              if (res.code != 200) {
+                common.login()
+              }
+              return {
+                code: res.code, //解析接口状态
+                msg: res.msg, //解析提示文本
+                count: res.data.total, //解析数据长度
+                data: res.data.list, //解析数据列表
+              }
+            },
+            response: {
+              statusCode: 200, //重新规定成功的状态码为 200，table 组件默认为 0
+            },
+            request: {
+              pageName: 'page', //页码的参数名称，默认：page
+              limitName: 'size', //每页数据量的参数名，默认：limit
+            },
+            initSort: {
+              field: 'id',
+              type: 'asc',
+            },
+          })
+
+          //监听工具栏添加删除刷新
+          table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+              // 监听添加操作
+              showEditModel()
+            } else if (obj.event === 'delete') {
+              // 监听删除操作
+              var data = table.checkStatus('currentTableId').data
+              if (data.length === 0) {
+                layer.msg('请选择要删除的数据', { icon: 2 })
+                return
+              }
+              var ids = data.map(function (d) {
+                return d.id
+              })
+              doDel(ids)
+            } else if (obj.event === 'refresh') {
+              tableIns.reload({
+                url: common.api + '/personal/list',
+                where: { departmentId: 0 },
+              })
+            } else if (obj.event === 'export') {
+              common.ajax(common.api + '/personal/all', null, function (res) {
+                var data = res.data
+                $.each(data, function (index, item) {
+                  if (item.gender == 1) {
+                    item.gender = '男'
+                  } else if (item.gender == 2) {
+                    item.gender = '女'
+                  }
+                  if (item.workStatus == 1) {
+                    item.workStatus = '正式员工'
+                  } else if (item.workStatus == 2) {
+                    item.workStatus = '试用期'
+                  } else if (item.workStatus == 3) {
+                    item.workStatus = '实习期'
+                  } else if (item.workStatus == 4) {
+                    item.workStatus = '已离职'
+                  }
+                })
+                data = common.compare(data)
+                console.log(data)
+                data = excel.filterExportData(data, [
+                  'id',
+                  'name',
+                  'gender',
+                  'birthday',
+                  'phone',
+                  'email',
+                  'identity',
+                  'education',
+                  'school',
+                  'imgUrl',
+                  'workStatus',
+                  'departmentName',
+                  'positionName',
+                ])
+                data.unshift({
+                  id: '员工编号',
+                  name: '员工姓名',
+                  gender: '性别',
+                  birthday: '出生日期',
+                  phone: '联系电话',
+                  email: '电子邮箱',
+                  identity: '身份证号',
+                  education: '学历',
+                  school: '毕业院校',
+                  imgUrl: '员工照片',
+                  workStatus: '工作状态',
+                  departmentName: '就职部门',
+                  positionName: '岗位',
+                })
+                var timestart = Date.now()
+                excel.exportExcel(
+                  {
+                    sheet1: data,
+                  },
+                  '全体员工信息.xlsx',
+                  'xlsx'
+                )
+                var timeend = Date.now()
+
+                var spent = (timeend - timestart) / 1000
+                layer.msg('单纯导出耗时 ' + spent + ' s')
+              })
+            }
+          })
+
+          //监听编辑删除
+          table.on('tool(currentTableFilter)', function (obj) {
+            if (obj.event === 'edit') {
+              showEditModel(obj.data)
+            } else if (obj.event === 'delete') {
+              doDel([obj.data.id])
+            }
+          })
+
+          function showEditModel(formData) {
+            var idx = layer.open({
+              type: 1,
+              area: ['50%', '90%'],
+              title: formData ? '编辑' : '添加',
+              anim: 1,
+              shade: 0.6,
+              content: $('#userEditDialog').html(),
+              success: function (layero, dIndex) {
+                // 回显表单数据
+                form.val('userEditForm', formData)
+                if (formData) {
+                  $('#demoPic').attr('src', formData.imgUrl) //图片链接（base64）
+                }
+                console.log(formData)
+                //加载日期
+                laydate.render({
+                  elem: '#birty',
+                  value: formData ? formData.birthday : '',
+                })
+                //普通图片上传
+                var indexI
+                var uploadInst = upload.render({
+                  elem: '#test1',
+                  url: common.api + '/image/upload',
+                  size: 1024,
+                  number: 1,
+                  before: function (obj) {
+                    indexI = layer.load(2)
+                    obj.preview(function (index, file, result) {
+                      $('#demoPic').attr('src', result)
+                    })
+                  },
+                  done: function (res) {
+                    console.log(res)
+                    if (res.code == 200) {
+                      $('#imgUrl').val(res.data)
+                    }
+                    layer.close(indexI)
+                    layer.msg(res.msg, { icon: 1 })
+                  },
+                  error: function () {},
+                })
+                //select框部门、岗位的数据动态加载
+                $.each(selectData, function (index, item) {
+                  var option = new Option(item.departmentName, item.id)
+                  $('#departmentId').append(option)
+                })
+                var index = $('#departmentId').val()
+                if (formData) {
+                  index = formData.departmentId
+                  $('#departmentId').val(formData.departmentId)
+                }
+                var selectPosition = positionSelect(index)
+                $.each(selectPosition, function (index, item) {
+                  var option = new Option(item.positionName, item.id)
+                  $('#positionId').append(option)
+                })
+                if (formData) {
+                  $('#positionId').val(formData.positionId)
+                }
+                form.render('select')
+                // 表单提交事件
+                form.on('submit(userEditSubmit)', function (data) {
+                  console.log(data.field)
+                  var loadIndex = layer.load(2)
+                  common.ajax(
+                    formData
+                      ? common.api + '/personal/' + formData.id
+                      : common.api + '/personal',
+                    JSON.stringify(data.field),
+                    function (res) {
+                      layer.close(loadIndex)
+                      if (res.code === 200) {
+                        layer.close(dIndex)
+                        layer.msg(res.msg, { icon: 1 })
+                        table.reload('currentTableId')
+                      } else {
+                        layer.msg(res.msg, { icon: 2 })
+                      }
+                    },
+                    formData ? 'put' : 'post',
+                    function (data) {
+                      layer.close(loadIndex)
+                      layer.msg(data.msg, { icon: 2 })
+                    }
+                  )
+                  return false
+                })
+
+                $('#Cancel').click(function () {
+                  layer.close(idx)
+                })
+              },
+            })
+          }
+
+          function doDel(ids) {
+            layer.confirm(
+              '确定要删除选中数据吗？',
+              {
+                skin: 'layui-layer-admin',
+                shade: 0.1,
+              },
+              function (i) {
+                var index = layer.load(2)
+                common.ajax(
+                  common.api + '/personal',
+                  JSON.stringify(ids),
+                  function (res) {
+                    if (res.code === 200) {
+                      layer.close(index)
+                      layer.msg(res.msg, { icon: 1 })
+                      tableIns.reload()
+                    } else {
+                      layer.close(index)
+                      layer.msg(res.msg, { icon: 2 })
+                    }
+                  },
+                  'DELETE',
+                  function (data) {
+                    console.log(data)
+                    layer.close(index)
+                    layer.msg(data.msg, { icon: 2, time: 1000 })
+                    return
+                  }
+                )
+                layer.close(i)
+              }
+            )
+          }
+
+          // 监听搜索操作
+          form.on('submit(data-search-btn)', function (data) {
+            var param = data.field
+            console.log(param)
+            // return false
+            // 执行搜索重载
+            tableIns.reload({
+              url: common.api + '/personal/list',
+              method: 'get',
+              where: param,
+            })
+            return false
+          })
+
+          // 监听编辑页面 部门选择框
+          form.on('select(selectDepartment)', function (data) {
+            var selectPosition = positionSelect(data.value)
+            $('#positionId').empty()
+            $.each(selectPosition, function (index, item) {
+              var option = new Option(item.positionName, item.id)
+              $('#positionId').append(option)
+            })
+            form.render('select')
+          })
+
+          var selectData
+          layer.ready(function () {
+            //select 部门数据动态加载
+            common.ajax(
+              common.api + '/department/select',
+              null,
+              function (data) {
+                selectData = data.data
+                $.each(selectData, function (index, item) {
+                  var option = new Option(item.departmentName, item.id)
+                  $('#selectId').append(option)
+                })
+                form.render('select')
+              }
+            )
+            // 监听重置操作
+            $('#data-reset-btn').click(function () {
+              $('#personalName').val('')
+              $('#workStatus').val(0)
+              $('#selectId').val(0)
+              form.render('select')
+              tableIns.reload({
+                url: common.api + '/personal/list',
+                method: 'get',
+                where: { departmentId: 0, workStatus: 0, personalName: '' },
+              })
+            })
+          })
+
+          function positionSelect(departmentId) {
+            var selectPosition
+            common.ajax(
+              common.api + '/position/select/' + departmentId,
+              null,
+              function (data) {
+                selectPosition = data.data
+              },
+              'get',
+              null,
+              false
+            )
+            return selectPosition
+          }
+        }
+      )
+    </script>
+  </body>
+</html>

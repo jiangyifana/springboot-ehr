@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>部门管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../../layuimini/lib/layui-v2.5.5/css/layui.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="../../layuimini/css/public.css" media="all" />
+  </head>
+
+  <body>
+    <div class="layuimini-container">
+      <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+          <legend>搜索信息</legend>
+          <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">部门名称</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      name="departmentName"
+                      id="departmentName"
+                      class="layui-input"
+                      lay-verType="tips"
+                      lay-verify="required"
+                      required
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button
+                    type="submit"
+                    class="layui-btn layui-btn-primary"
+                    lay-submit
+                    lay-filter="data-search-btn"
+                  >
+                    <i class="layui-icon"></i> 搜 索
+                  </button>
+                </div>
+                <div class="layui-inline">
+                  <a
+                    type="button"
+                    class="layui-btn layui-btn-primary"
+                    id="data-reset-btn"
+                  >
+                    <i class="layui-icon"></i> 重 置
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button
+              class="layui-btn layui-btn-normal layui-btn-sm"
+              lay-event="add"
+            >
+              添加
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              lay-event="delete"
+            >
+              删除
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-sucess"
+              lay-event="refresh"
+            >
+              刷新
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-warm"
+              lay-event="export"
+            >
+              导出全部数据
+            </button>
+          </div>
+        </script>
+
+        <table
+          class="layui-hide"
+          id="currentTableId"
+          lay-filter="currentTableFilter"
+        ></table>
+      </div>
+    </div>
+
+    <script type="text/html" id="userEditDialog">
+      <form
+        id="userEditForm"
+        lay-filter="userEditForm"
+        class="layui-form layui-form-pane"
+        style="padding-left:20px;margin-top: 20px;"
+      >
+        <div class="layui-row">
+          <div class="layui-col-md6">
+            <div class="layui-form-item">
+              <label class="layui-form-label layui-form-required"
+                >部门名称:</label
+              >
+              <div class="layui-input-block">
+                <input
+                  name="departmentName"
+                  placeholder="请输入部门名称"
+                  class="layui-input"
+                  lay-verType="msg"
+                  lay-verify="required"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">部门描述:</label>
+              <div class="layui-input-block">
+                <input
+                  name="description"
+                  placeholder="请输入部门描述"
+                  class="layui-input"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-input-block">
+          <button class="layui-btn" lay-filter="userEditSubmit" lay-submit>
+            提交
+          </button>
+          <button class="layui-btn layui-btn-primary" type="button" id="Cancel">
+            取消
+          </button>
+        </div>
+      </form>
+    </script>
+
+    <script type="text/html" id="currentTableBar">
+      <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit"
+        >编辑</a
+      >
+      <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"
+        >删除</a
+      >
+    </script>
+
+    <script
+      src="../../layuimini/lib/layui-v2.5.5/layui.js"
+      charset="utf-8"
+    ></script>
+    <script src="../../layuimini/js/lay-config.js" charset="utf-8"></script>
+
+    <script>
+      layui.use(['layer', 'form', 'table', 'common', 'excel'], function () {
+        var $ = layui.jquery,
+          form = layui.form,
+          table = layui.table,
+          common = layui.common,
+          excel = layui.excel
+
+        var tableIns = table.render({
+          elem: '#currentTableId',
+          url: common.api + '/department/list',
+          where: { token: common.getToken },
+          toolbar: '#toolbarDemo',
+          title: '部门信息',
+          cols: [
+            [
+              {
+                type: 'checkbox',
+                width: 50,
+              },
+              {
+                field: 'id',
+                width: 80,
+                title: 'ID',
+                align: 'center',
+                sort: true,
+              },
+              {
+                field: 'departmentName',
+                width: 250,
+                title: '部门名称',
+                align: 'center',
+                edit: 'text',
+              },
+              {
+                field: 'description',
+                width: 250,
+                title: '部门描述',
+                align: 'center',
+                edit: 'text',
+              },
+              {
+                field: 'createTime',
+                width: 250,
+                title: '创建时间',
+                align: 'center',
+                templet: function (d) {
+                  var time = layui.util.toDateString(d.createTime)
+                  return '<div>' + time + '</div>'
+                },
+                sort: true,
+              },
+              {
+                field: 'updateTime',
+                width: 250,
+                title: '更新时间',
+                align: 'center',
+                templet: function (d) {
+                  var time = layui.util.toDateString(d.updateTime)
+                  return '<div>' + time + '</div>'
+                },
+                sort: true,
+              },
+              {
+                title: '操作',
+                minWidth: 150,
+                toolbar: '#currentTableBar',
+                align: 'center',
+              },
+            ],
+          ],
+          limits: [1, 5, 10, 15, 20],
+          limit: 15,
+          page: true,
+          skin: 'row',
+          even: true,
+          parseData: function (res) {
+            if (res.code != 200) {
+              common.login()
+            }
+            return {
+              code: res.code, //解析接口状态
+              msg: res.msg, //解析提示文本
+              count: res.data.total, //解析数据长度
+              data: res.data.list, //解析数据列表
+            }
+          },
+          response: {
+            statusCode: 200, //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size', //每页数据量的参数名，默认：limit
+          },
+        })
+
+        //监听单元格编辑
+        table.on('edit(currentTableFilter)', function (obj) {
+          var old = $(this).prev().text() //获取初始值
+          var value = obj.value, //得到修改后的值
+            data = obj.data, //得到所在行所有键值
+            field = obj.field //得到字段
+          str = {
+            [field]: value,
+          }
+          common.ajax(
+            common.api + '/department/' + data.id,
+            JSON.stringify(str),
+            function (res) {
+              if (res.code === 200) {
+                layer.msg(res.msg, { icon: 1 })
+                tableIns.reload()
+              } else {
+                layer.msg(res.msg, { icon: 2 })
+                obj.update({
+                  [field]: old,
+                })
+              }
+            },
+            'put', // 提交方式
+            function (data) {
+              console.log(data)
+              layer.msg(data.msg, { icon: 2, time: 1000 })
+              obj.update({
+                [field]: old,
+              })
+              return
+            }
+          )
+        })
+
+        //监听工具栏添加删除刷新
+        table.on('toolbar(currentTableFilter)', function (obj) {
+          if (obj.event === 'add') {
+            // 监听添加操作
+            showEditModel()
+          } else if (obj.event === 'delete') {
+            // 监听删除操作
+            var data = table.checkStatus('currentTableId').data
+            if (data.length === 0) {
+              layer.msg('请选择要删除的数据', { icon: 2 })
+              return
+            }
+            var ids = data.map(function (d) {
+              return d.id
+            })
+            doDel(ids)
+          } else if (obj.event === 'refresh') {
+            tableIns.reload({
+              url: common.api + '/department/list',
+              method: 'get',
+            })
+          } else if (obj.event === 'export') {
+            common.ajax(common.api + '/department/all', null, function (res) {
+              var data = res.data
+              data = common.compare(data)
+              console.log(data)
+              data = excel.filterExportData(data, [
+                'id',
+                'departmentName',
+                'description',
+              ])
+              data.unshift({
+                id: '部门编号',
+                departmentName: '部门名称',
+                description: '部门描述',
+              })
+              var timestart = Date.now()
+              excel.exportExcel(
+                {
+                  sheet1: data,
+                },
+                '部门信息.xlsx',
+                'xlsx'
+              )
+              var timeend = Date.now()
+
+              var spent = (timeend - timestart) / 1000
+              layer.msg('单纯导出耗时 ' + spent + ' s')
+            })
+          }
+        })
+
+        //监听编辑删除
+        table.on('tool(currentTableFilter)', function (obj) {
+          if (obj.event === 'edit') {
+            showEditModel(obj.data)
+          } else if (obj.event === 'delete') {
+            doDel([obj.data.id])
+          }
+        })
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+          var param = data.field
+          //执行搜索重载
+          tableIns.reload({
+            url: common.api + '/department/search',
+            method: 'post',
+            where: param,
+          })
+          return false
+        })
+
+        //显示添加弹窗
+        function showEditModel(formData) {
+          var idx = layer.open({
+            type: 1,
+            area: ['50%'],
+            title: formData ? '编辑' : '添加',
+            anim: 1,
+            shade: 0.6,
+            content: $('#userEditDialog').html(),
+            success: function (layero, dIndex) {
+              // 回显表单数据
+              form.val('userEditForm', formData)
+              // 表单提交事件
+              form.on('submit(userEditSubmit)', function (data) {
+                common.ajax(
+                  formData
+                    ? common.api + '/department/' + formData.id
+                    : common.api + '/department',
+                  JSON.stringify(data.field),
+                  function (res) {
+                    if (res.code === 200) {
+                      layer.close(dIndex)
+                      layer.msg(res.msg, { icon: 1 })
+                      table.reload('currentTableId')
+                    } else {
+                      layer.msg(res.msg, { icon: 2 })
+                    }
+                  },
+                  formData ? 'put' : 'post',
+                  function (data) {
+                    layer.msg(data.msg, { icon: 2 })
+                  }
+                )
+                return false
+              })
+
+              $('#Cancel').click(function () {
+                layer.close(idx)
+              })
+            },
+          })
+        }
+
+        function doDel(ids) {
+          layer.confirm(
+            '确定要删除选中数据吗？',
+            {
+              skin: 'layui-layer-admin',
+              shade: 0.1,
+            },
+            function (i) {
+              var index = layer.load(2)
+              common.ajax(
+                common.api + '/department',
+                JSON.stringify(ids),
+                function (res) {
+                  if (res.code === 200) {
+                    layer.close(index)
+                    layer.msg(res.msg, { icon: 1 })
+                    tableIns.reload()
+                  } else {
+                    layer.close(index)
+                    layer.msg(res.msg, { icon: 2 })
+                  }
+                },
+                'DELETE',
+                function (data) {
+                  console.log(data)
+                  layer.close(index)
+                  layer.msg(data.msg, { icon: 2, time: 1000 })
+                  return
+                }
+              )
+              layer.close(i)
+            }
+          )
+        }
+
+        layer.ready(function () {
+          // 监听重置操作
+          $('#data-reset-btn').click(function () {
+            $('#departmentName').val('')
+            tableIns.reload({
+              url: common.api + '/department/list',
+              method: 'get',
+              where: { departmentName: '' },
+            })
+          })
+        })
+      })
+    </script>
+  </body>
+</html>

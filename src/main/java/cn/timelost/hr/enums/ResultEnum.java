@@ -23,6 +23,7 @@ public enum ResultEnum {
     CODE_FAIL(23, "验证码错误"),
 
     UPLOAD_FAIL(50, "服务器上传失败"),
+    UPLOAD_NOT_ENABLE(51, "上传配置未开启"),
     AUTHENTICATE_FAIL(5000, "认证异常,请重新登录"),
     AUTHORIZATION_FAIL(5001, "用户无权限"),
     ERROR(500, "未知错误"),

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>岗位管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../../layuimini/lib/layui-v2.5.5/css/layui.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="../../layuimini/css/public.css" media="all" />
+  </head>
+
+  <body>
+    <div class="layuimini-container">
+      <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+          <legend>搜索信息</legend>
+          <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">部门选择</label>
+                <div class="layui-input-inline">
+                  <select id="selectId" name="departmentId" lay-filter="select">
+                    <option value="0">请选择部门</option>
+                  </select>
+                </div>
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">岗位名称</label>
+                  <div class="layui-input-inline">
+                    <input
+                      id="positionName"
+                      type="text"
+                      name="positionName"
+                      class="layui-input"
+                    />
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button
+                    type="submit"
+                    class="layui-btn layui-btn-primary"
+                    lay-submit
+                    lay-filter="data-search-btn"
+                  >
+                    <i class="layui-icon layui-icon-search"></i> 搜 索
+                  </button>
+                </div>
+                <div class="layui-inline">
+                  <a
+                    type="button"
+                    class="layui-btn layui-btn-primary"
+                    id="data-reset-btn"
+                  >
+                    <i class="layui-icon"></i> 重 置
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button
+              class="layui-btn layui-btn-normal layui-btn-sm"
+              lay-event="add"
+            >
+              添加
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              lay-event="delete"
+            >
+              删除
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-sucess"
+              lay-event="refresh"
+            >
+              刷新
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-warm"
+              lay-event="export"
+            >
+              导出全部数据
+            </button>
+          </div>
+        </script>
+
+        <table
+          class="layui-hide"
+          id="currentTableId"
+          lay-filter="currentTableFilter"
+        ></table>
+      </div>
+    </div>
+
+    <script type="text/html" id="userEditDialog">
+      <form
+        id="userEditForm"
+        lay-filter="userEditForm"
+        class="layui-form layui-form-pane"
+        style="padding-left:20px;margin-top: 20px;"
+      >
+        <div class="layui-row">
+          <div class="layui-col-md6">
+            <div class="layui-form-item">
+              <label class="layui-form-label layui-form-required"
+                >岗位名称:</label
+              >
+              <div class="layui-input-block">
+                <input
+                  name="positionName"
+                  placeholder="请输入岗位名称"
+                  class="layui-input"
+                  lay-verType="msg"
+                  lay-verify="required"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">岗位描述:</label>
+              <div class="layui-input-block">
+                <input
+                  name="description"
+                  placeholder="请输入岗位描述"
+                  class="layui-input"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">部门选择</label>
+              <div class="layui-input-inline">
+                <select
+                  name="departmentId"
+                  id="selectEditId"
+                  lay-verify="required"
+                  required
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-input-block">
+          <button class="layui-btn" lay-filter="userEditSubmit" lay-submit>
+            提交
+          </button>
+          <button class="layui-btn layui-btn-primary" type="button" id="Cancel">
+            取消
+          </button>
+        </div>
+      </form>
+    </script>
+
+    <script type="text/html" id="currentTableBar">
+      <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit"
+        >编辑</a
+      >
+      <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"
+        >删除</a
+      >
+    </script>
+
+    <script
+      src="../../layuimini/lib/layui-v2.5.5/layui.js"
+      charset="utf-8"
+    ></script>
+    <script src="../../layuimini/js/lay-config.js" charset="utf-8"></script>
+    <script>
+      var tableIns
+      layui.use(['layer', 'form', 'table', 'common', 'excel'], function (args) {
+        var $ = layui.jquery,
+          form = layui.form,
+          table = layui.table,
+          common = layui.common,
+          excel = layui.excel
+
+        tableIns = table.render({
+          elem: '#currentTableId',
+          url: common.api + '/position/list',
+          where: { token: common.getToken },
+          toolbar: '#toolbarDemo',
+          title: '岗位信息',
+          limits: [1, 5, 10, 15, 20],
+          limit: 15,
+          page: true,
+          skin: 'row',
+          even: true,
+          cols: [
+            [
+              {
+                type: 'checkbox',
+                width: 50,
+              },
+              {
+                field: 'id',
+                title: 'ID',
+                width: 80,
+                sort: true,
+                align: 'center',
+              },
+              {
+                field: 'positionName',
+                width: 250,
+                title: '岗位名称',
+                align: 'center',
+                edit: 'text',
+              },
+              {
+                field: 'description',
+                width: 250,
+                title: '岗位描述',
+                align: 'center',
+                edit: 'text',
+              },
+              {
+                field: 'departmentName',
+                width: 250,
+                title: '所属部门',
+                align: 'center',
+              },
+              {
+                field: 'createTime',
+                width: 250,
+                title: '创建时间',
+                align: 'center',
+                templet: function (d) {
+                  var time = layui.util.toDateString(d.createTime)
+                  return '<div>' + time + '</div>'
+                },
+                sort: true,
+              },
+              {
+                field: 'updateTime',
+                width: 250,
+                title: '更新时间',
+                align: 'center',
+                templet: function (d) {
+                  var time = layui.util.toDateString(d.updateTime)
+                  return '<div>' + time + '</div>'
+                },
+                sort: true,
+              },
+              {
+                title: '操作',
+                minWidth: 150,
+                toolbar: '#currentTableBar',
+                align: 'center',
+              },
+            ],
+          ],
+          parseData: function (res) {
+            if (res.code != 200) {
+              common.login()
+            }
+            return {
+              code: res.code, //解析接口状态
+              msg: res.msg, //解析提示文本
+              count: res.data.total, //解析数据长度
+              data: res.data.list, //解析数据列表
+            }
+          },
+          response: {
+            statusCode: 200, //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size', //每页数据量的参数名，默认：limit
+          },
+          initSort: {
+            field: 'id',
+            type: 'asc',
+          },
+        })
+
+        //监听单元格编辑
+        table.on('edit(currentTableFilter)', function (obj) {
+          var old = $(this).prev().text() //获取初始值
+          console.log(old)
+          var value = obj.value, //得到修改后的值
+            data = obj.data, //得到所在行所有键值
+            field = obj.field,
+            departmentId = data.departmentId //得到字段
+          if (field != departmentId) {
+            str = {
+              [field]: value,
+              departmentId: departmentId,
+            }
+          } else {
+            str = {
+              [field]: value,
+            }
+          }
+
+          common.ajax(
+            common.api + '/position/' + data.id,
+            JSON.stringify(str),
+            function (res) {
+              if (res.code === 200) {
+                layer.msg(res.msg, { icon: 1 })
+                tableIns.reload()
+              } else {
+                layer.msg(res.msg, { icon: 2 })
+                obj.update({
+                  [field]: old,
+                })
+              }
+            },
+            'put', // 提交方式
+            function (data) {
+              console.log(data)
+              layer.msg(data.msg, { icon: 2, time: 1000 })
+              obj.update({
+                [field]: old,
+              })
+              return
+            }
+          )
+        })
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+          var param = data.field
+          // 执行搜索重载
+          tableIns.reload({
+            url: common.api + '/position/list',
+            method: 'get',
+            where: param,
+          })
+          return false
+        })
+
+        //监听工具栏添加删除刷新
+        table.on('toolbar(currentTableFilter)', function (obj) {
+          if (obj.event === 'add') {
+            // 监听添加操作
+            showEditModel()
+          } else if (obj.event === 'delete') {
+            // 监听删除操作
+            var data = table.checkStatus('currentTableId').data
+            if (data.length === 0) {
+              layer.msg('请选择要删除的数据', { icon: 2 })
+              return
+            }
+            var ids = data.map(function (d) {
+              return d.id
+            })
+            doDel(ids)
+          } else if (obj.event === 'refresh') {
+            tableIns.reload({
+              url: common.api + '/position/list',
+              where: { departmentId: 0 },
+            })
+          } else if (obj.event === 'export') {
+            common.ajax(common.api + '/position/all', null, function (res) {
+              var data = res.data
+              data = common.compare(data)
+              console.log(data)
+              data = excel.filterExportData(data, [
+                'id',
+                'positionName',
+                'description',
+                'departmentName',
+              ])
+              data.unshift({
+                id: '岗位编号',
+                positionName: '岗位名称',
+                description: '岗位描述',
+                departmentName: '所属部门',
+              })
+              var timestart = Date.now()
+              excel.exportExcel(
+                {
+                  sheet1: data,
+                },
+                '岗位信息.xlsx',
+                'xlsx'
+              )
+              var timeend = Date.now()
+
+              var spent = (timeend - timestart) / 1000
+              layer.msg('单纯导出耗时 ' + spent + ' s')
+            })
+          }
+        })
+
+        //监听编辑删除
+        table.on('tool(currentTableFilter)', function (obj) {
+          if (obj.event === 'edit') {
+            showEditModel(obj.data)
+          } else if (obj.event === 'delete') {
+            doDel([obj.data.id])
+          }
+        })
+
+        function showEditModel(formData) {
+          var idx = layer.open({
+            type: 1,
+            area: ['50%', '50%'],
+            title: formData ? '编辑' : '添加',
+            anim: 1,
+            shade: 0.6,
+            content: $('#userEditDialog').html(),
+            success: function (layero, dIndex) {
+              // 回显表单数据
+              form.val('userEditForm', formData)
+              //select 框的数据动态加载
+              $.each(selectData, function (index, item) {
+                var option = new Option(item.departmentName, item.id)
+                $('#selectEditId').append(option)
+              })
+              if (formData) {
+                $('#selectEditId').val(formData.departmentId)
+              }
+              form.render('select')
+              // 表单提交事件
+              form.on('submit(userEditSubmit)', function (data) {
+                common.ajax(
+                  formData
+                    ? common.api + '/position/' + formData.id
+                    : common.api + '/position',
+                  JSON.stringify(data.field),
+                  function (res) {
+                    if (res.code === 200) {
+                      layer.msg(res.msg, { icon: 1 })
+                      table.reload('currentTableId')
+                    } else {
+                      layer.msg(res.msg, { icon: 2 })
+                    }
+                    layer.close(dIndex)
+                  },
+                  formData ? 'put' : 'post',
+                  function (data) {
+                    layer.msg(data.msg, { icon: 2 })
+                  }
+                )
+                return false
+              })
+
+              $('#Cancel').click(function () {
+                layer.close(idx)
+              })
+            },
+          })
+        }
+
+        function doDel(ids) {
+          layer.confirm(
+            '确定要删除选中数据吗？',
+            {
+              skin: 'layui-layer-admin',
+              shade: 0.1,
+            },
+            function (i) {
+              common.ajax(
+                common.api + '/position',
+                JSON.stringify(ids),
+                function (res) {
+                  if (res.code === 200) {
+                    layer.msg(res.msg, { icon: 1 })
+                    tableIns.reload()
+                  } else {
+                    layer.msg(res.msg, { icon: 2 })
+                  }
+                },
+                'DELETE',
+                function (data) {
+                  console.log(data)
+                  layer.msg(data.msg, { icon: 2, time: 1000 })
+                  return
+                }
+              )
+              layer.close(i)
+            }
+          )
+        }
+
+        var selectData
+        layer.ready(function () {
+          //select 框的数据动态加载
+          common.ajax(common.api + '/department/select', null, function (data) {
+            selectData = data.data
+            $.each(selectData, function (index, item) {
+              var option = new Option(item.departmentName, item.id)
+              $('#selectId').append(option)
+            })
+            form.render('select')
+          })
+          // 监听重置操作
+          $('#data-reset-btn').click(function () {
+            $('#positionName').val('')
+            $('#selectId').val(0)
+            form.render('select')
+            tableIns.reload({
+              url: common.api + '/position/list',
+              method: 'get',
+              where: { departmentId: 0, positionName: '' },
+            })
+          })
+        })
+      })
+    </script>
+  </body>
+</html>

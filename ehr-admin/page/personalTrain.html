@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>职工培训管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../../layuimini/lib/layui-v2.5.5/css/layui.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="../../layuimini/css/public.css" media="all" />
+  </head>
+
+  <body>
+    <div class="layuimini-container">
+      <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+          <legend>搜索信息</legend>
+          <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">部门选择</label>
+                <div class="layui-input-inline">
+                  <select
+                    name="departmentName"
+                    id="selectId"
+                    lay-filter="select"
+                  >
+                    <option value="0">请选择部门</option>
+                  </select>
+                  <input
+                    type="hidden"
+                    name="departmentName"
+                    id="departmentName"
+                  />
+                </div>
+                <label class="layui-form-label">职工选择</label>
+                <div class="layui-input-inline">
+                  <select
+                    name="personalId"
+                    id="selectPersonal"
+                    lay-filter="selectPersonal"
+                  >
+                    <option value="0">请选择职工</option>
+                  </select>
+                </div>
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">培训日期:</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      id="searchTrainDate"
+                      autocomplete="off"
+                      class="layui-input"
+                    />
+                    <input
+                      type="hidden"
+                      name="beginDate"
+                      id="searchBeginDate"
+                    />
+                    <input type="hidden" name="endDate" id="searchEndDate" />
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button
+                    type="submit"
+                    class="layui-btn layui-btn-primary"
+                    lay-submit
+                    lay-filter="data-search-btn"
+                  >
+                    <i class="layui-icon layui-icon-search"></i> 搜 索
+                  </button>
+                </div>
+                <div class="layui-inline">
+                  <a
+                    type="button"
+                    class="layui-btn layui-btn-primary"
+                    id="data-reset-btn"
+                  >
+                    <i class="layui-icon"></i> 重 置
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button
+              class="layui-btn layui-btn-normal layui-btn-sm"
+              lay-event="add"
+            >
+              添加
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              lay-event="delete"
+            >
+              删除
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-sucess"
+              lay-event="refresh"
+            >
+              刷新
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-warm"
+              lay-event="export"
+            >
+              导出全部数据
+            </button>
+          </div>
+        </script>
+
+        <table
+          class="layui-hide"
+          id="currentTableId"
+          lay-filter="currentTableFilter"
+        ></table>
+      </div>
+    </div>
+
+    <script type="text/html" id="userEditDialog">
+      <form
+        id="userEditForm"
+        lay-filter="userEditForm"
+        class="layui-form layui-form-pane"
+        style="padding-left:20px;margin-top: 20px;"
+      >
+        <div class="layui-row">
+          <div class="layui-col-md12">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">职工名称:</label>
+                <div class="layui-input-inline">
+                  <select
+                    name="personalId"
+                    id="personalId"
+                    lay-filter="selectPersonal"
+                    lay-search
+                    lay-verType="tips"
+                    lay-verify="required"
+                  >
+                    <option value="">请选择职工</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">培训日期:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="text"
+                    name="trainDate"
+                    id="trainDate"
+                    autocomplete="off"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="required"
+                  />
+                  <input type="hidden" name="beginDate" id="beginDate" />
+                  <input type="hidden" name="endDate" id="endDate" />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">培训内容:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="trainContent"
+                    placeholder="请输入培训内容"
+                    class="layui-input"
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">培训分数:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="trainScore"
+                    placeholder="请输入培训分数"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="number"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">培训费用:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="trainCost"
+                    placeholder="请输入培训费用"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="number"
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">备注:</label>
+                <div class="layui-input-inline">
+                  <input
+                    name="remake"
+                    placeholder="请输入备注"
+                    class="layui-input"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-input-block">
+          <button class="layui-btn" lay-filter="userEditSubmit" lay-submit>
+            提交
+          </button>
+          <button class="layui-btn layui-btn-primary" type="button" id="Cancel">
+            取消
+          </button>
+        </div>
+      </form>
+    </script>
+
+    <script type="text/html" id="currentTableBar">
+      <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit"
+        >编辑</a
+      >
+      <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"
+        >删除</a
+      >
+    </script>
+
+    <script
+      src="../../layuimini/lib/layui-v2.5.5/layui.js"
+      charset="utf-8"
+    ></script>
+    <script src="../../layuimini/js/lay-config.js" charset="utf-8"></script>
+    <script>
+      var tableIns
+      layui.use(
+        ['layer', 'form', 'table', 'laydate', 'common', 'excel'],
+        function (args) {
+          var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table,
+            common = layui.common,
+            excel = layui.excel
+
+          tableIns = table.render({
+            elem: '#currentTableId',
+            url: common.api + '/train/list',
+            where: { token: common.getToken },
+            toolbar: '#toolbarDemo',
+            title: '职工培训信息',
+            limits: [1, 5, 10, 15, 20],
+            limit: 15,
+            page: true,
+            skin: 'row',
+            even: true,
+            cols: [
+              [
+                {
+                  type: 'checkbox',
+                  width: 50,
+                },
+                {
+                  field: 'id',
+                  title: 'ID',
+                  width: 80,
+                  sort: true,
+                  align: 'center',
+                },
+                {
+                  field: 'personalName',
+                  width: 100,
+                  title: '职工姓名',
+                  align: 'center',
+                },
+                {
+                  field: 'departmentName',
+                  width: 150,
+                  title: '所属部门',
+                  align: 'center',
+                },
+                {
+                  field: 'positionName',
+                  width: 150,
+                  title: '所属岗位',
+                  align: 'center',
+                },
+                {
+                  field: 'trainContent',
+                  width: 300,
+                  title: '培训内容',
+                  align: 'center',
+                },
+                {
+                  field: 'trainScore',
+                  width: 100,
+                  title: '培训分数',
+                  align: 'center',
+                },
+                {
+                  field: 'trainCost',
+                  width: 100,
+                  title: '培训费用',
+                  align: 'center',
+                  templet: function (d) {
+                    return d.trainCost + '元'
+                  },
+                },
+                {
+                  field: 'remake',
+                  width: 100,
+                  title: '备注',
+                  align: 'center',
+                },
+                {
+                  field: 'beginDate',
+                  width: 250,
+                  title: '培训日期',
+                  align: 'center',
+                  templet: function (d) {
+                    var beginDate = layui.util.toDateString(
+                      d.beginDate,
+                      'yyyy-MM-dd'
+                    )
+                    var endDate = layui.util.toDateString(
+                      d.endDate,
+                      'yyyy-MM-dd'
+                    )
+                    return '<div>' + beginDate + ' - ' + endDate + '</div>'
+                  },
+                  sort: true,
+                },
+                {
+                  title: '操作',
+                  minWidth: 150,
+                  toolbar: '#currentTableBar',
+                  align: 'center',
+                },
+              ],
+            ],
+            parseData: function (res) {
+              if (res.code != 200) {
+                common.login()
+              }
+              return {
+                code: res.code, //解析接口状态
+                msg: res.msg, //解析提示文本
+                count: res.data.total, //解析数据长度
+                data: res.data.list, //解析数据列表
+              }
+            },
+            response: {
+              statusCode: 200, //重新规定成功的状态码为 200，table 组件默认为 0
+            },
+            request: {
+              pageName: 'page', //页码的参数名称，默认：page
+              limitName: 'size', //每页数据量的参数名，默认：limit
+            },
+          })
+
+          // 监听搜索操作
+          form.on('submit(data-search-btn)', function (data) {
+            var param = data.field
+            console.log(param)
+            // 执行搜索重载
+            tableIns.reload({
+              url: common.api + '/train/list',
+              method: 'get',
+              where: param,
+            })
+            return false
+          })
+
+          //监听工具栏添加删除刷新
+          table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+              // 监听添加操作
+              showEditModel()
+            } else if (obj.event === 'delete') {
+              // 监听删除操作
+              var data = table.checkStatus('currentTableId').data
+              if (data.length === 0) {
+                layer.msg('请选择要删除的数据', { icon: 2 })
+                return
+              }
+              var ids = data.map(function (d) {
+                return d.id
+              })
+              doDel(ids)
+            } else if (obj.event === 'refresh') {
+              tableIns.reload({
+                url: common.api + '/train/list',
+                where: { departmentName: '' },
+              })
+            } else if (obj.event === 'export') {
+              common.ajax(common.api + '/train/all', null, function (res) {
+                var data = res.data
+                data = common.compare(data)
+                console.log(data)
+                data = excel.filterExportData(data, [
+                  'id',
+                  'personalName',
+                  'departmentName',
+                  'positionName',
+                  'beginDate',
+                  'endDate',
+                  'trainContent',
+                  'trainScore',
+                  'trainCost',
+                  'remake',
+                ])
+                data.unshift({
+                  id: '培训编号',
+                  personalName: '员工姓名',
+                  departmentName: '所属部门',
+                  positionName: '所属岗位',
+                  beginDate: '开始培训日期',
+                  endDate: '结束培训日期',
+                  trainContent: '培训内容',
+                  trainScore: '培训分数',
+                  trainCost: '培训费用',
+                  remake: '备注',
+                })
+                var timestart = Date.now()
+                excel.exportExcel(
+                  {
+                    sheet1: data,
+                  },
+                  '培训信息.xlsx',
+                  'xlsx'
+                )
+                var timeend = Date.now()
+
+                var spent = (timeend - timestart) / 1000
+                layer.msg('单纯导出耗时 ' + spent + ' s')
+              })
+            }
+          })
+
+          //监听编辑删除
+          table.on('tool(currentTableFilter)', function (obj) {
+            if (obj.event === 'edit') {
+              showEditModel(obj.data)
+            } else if (obj.event === 'delete') {
+              doDel([obj.data.id])
+            }
+          })
+
+          function showEditModel(formData) {
+            var idx = layer.open({
+              type: 1,
+              area: ['50%', '55%'],
+              title: formData ? '编辑' : '添加',
+              anim: 1,
+              shade: 0.6,
+              content: $('#userEditDialog').html(),
+              success: function (layero, dIndex) {
+                // 回显表单数据
+                form.val('userEditForm', formData)
+                if (formData) {
+                  var time =
+                    layui.util.toDateString(formData.beginDate, 'yyyy-MM-dd') +
+                    ' - ' +
+                    layui.util.toDateString(formData.endDate, 'yyyy-MM-dd')
+                }
+                //加载日期
+                laydate.render({
+                  elem: '#trainDate',
+                  range: true,
+                  value: formData ? time : '',
+                  done: function (value) {
+                    var date = value.split(' - ')
+                    $('#beginDate').val(date[0])
+                    $('#endDate').val(date[1])
+                  },
+                })
+                //职工select加载
+                $.each(personalDate, function (index, item) {
+                  var option = new Option(item.name, item.id)
+                  $('#personalId').append(option)
+                })
+                //设置select控件指定text的值为选中项
+                if (formData) {
+                  $('#personalId').val(formData.personalId)
+                }
+                form.render('select')
+                // 表单提交事件
+                form.on('submit(userEditSubmit)', function (data) {
+                  console.log(data.field)
+                  common.ajax(
+                    formData
+                      ? common.api + '/train/' + formData.id
+                      : common.api + '/train',
+                    JSON.stringify(data.field),
+                    function (res) {
+                      if (res.code === 200) {
+                        layer.close(dIndex)
+                        layer.msg(res.msg, { icon: 1 })
+                        table.reload('currentTableId')
+                      } else {
+                        layer.msg(res.msg, { icon: 2 })
+                      }
+                    },
+                    formData ? 'put' : 'post',
+                    function (data) {
+                      layer.msg(data.msg, { icon: 2 })
+                    }
+                  )
+                  return false
+                })
+
+                $('#Cancel').click(function () {
+                  layer.close(idx)
+                })
+              },
+            })
+          }
+
+          function doDel(ids) {
+            layer.confirm(
+              '确定要删除选中数据吗？',
+              {
+                skin: 'layui-layer-admin',
+                shade: 0.1,
+              },
+              function (i) {
+                common.ajax(
+                  common.api + '/train',
+                  JSON.stringify(ids),
+                  function (res) {
+                    if (res.code === 200) {
+                      layer.msg(res.msg, { icon: 1 })
+                      tableIns.reload()
+                    } else {
+                      layer.msg(res.msg, { icon: 2 })
+                    }
+                  },
+                  'DELETE',
+                  function (data) {
+                    console.log(data)
+                    layer.msg(data.msg, { icon: 2, time: 1000 })
+                    return
+                  }
+                )
+                layer.close(i)
+              }
+            )
+          }
+
+          //搜索 部门下拉框
+          form.on('select(select)', function (obj) {
+            if (obj.elem.selectedIndex == 0) $('#departmentName').val('')
+            if (obj.elem.selectedIndex != 0) {
+              var txtval = obj.elem[obj.elem.selectedIndex].text
+              $('#departmentName').val(txtval)
+            }
+          })
+
+          var selectData, personalDate
+          layer.ready(function () {
+            //select 框的数据动态加载
+            common.ajax(
+              common.api + '/department/select',
+              null,
+              function (data) {
+                selectData = data.data
+                $.each(selectData, function (index, item) {
+                  var option = new Option(item.departmentName, item.id)
+                  $('#selectId').append(option)
+                })
+                form.render('select')
+              }
+            )
+            common.ajax(common.api + '/personal/select', null, function (data) {
+              personalDate = data.data
+              $.each(personalDate, function (index, item) {
+                var option = new Option(item.name, item.id)
+                $('#selectPersonal').append(option)
+              })
+              form.render('select')
+            })
+            // 监听重置操作
+            $('#data-reset-btn').click(function () {
+              $('#selectId').val(0)
+              $('#selectPersonal').val(0)
+              form.render('select')
+              tableIns.reload({
+                url: common.api + '/train/list',
+                method: 'get',
+                where: {
+                  departmentName: '',
+                  personalId: 0,
+                  beginDate: '',
+                  endDate: '',
+                },
+              })
+            })
+            //加载日期
+            laydate.render({
+              elem: '#searchTrainDate',
+              range: true,
+              done: function (value) {
+                var date = value.split(' - ')
+                $('#searchBeginDate').val(date[0])
+                $('#searchEndDate').val(date[1])
+              },
+            })
+          })
+        }
+      )
+    </script>
+  </body>
+</html>

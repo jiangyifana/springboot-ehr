@@ -4,15 +4,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ehr?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
-    password: admin
+    password: root
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
     default-property-inclusion: NON_NULL
-  redis:
-    port: 6379
-    host: 127.0.0.1
-    timeout: 60
 mybatis:
   mapper-locations: classpath:mappers/*Dao.xml
   configuration:
@@ -22,7 +18,7 @@ server:
   port: 8080
 
 upyun:
-  bucketName: image-pic
-  username: zhinian1
-  password: PfPAw41pligE2f2dGD6VrL9xetCYyGo7
-  imageHost: http://image.timelost.cn
+  bucketName: xxx
+  username:
+  password:
+  imageHost: xx

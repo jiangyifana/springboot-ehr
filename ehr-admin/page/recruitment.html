@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>职工招聘管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../../layuimini/lib/layui-v2.5.5/css/layui.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="../../layuimini/css/public.css" media="all" />
+  </head>
+
+  <body>
+    <div class="layuimini-container">
+      <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+          <legend>搜索信息</legend>
+          <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">部门选择</label>
+                <div class="layui-input-inline">
+                  <select id="selectId" lay-filter="select">
+                    <option value="">请选择部门</option>
+                  </select>
+                  <input
+                    type="hidden"
+                    name="departmentName"
+                    id="departmentName"
+                  />
+                </div>
+
+                <label class="layui-form-label">招聘状态</label>
+                <div class="layui-input-inline">
+                  <select id="recruitStatus" name="recruitStatus">
+                    <option value="0">全部</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                  </select>
+                </div>
+
+                <div class="layui-inline">
+                  <button
+                    type="submit"
+                    class="layui-btn layui-btn-primary"
+                    lay-submit
+                    lay-filter="data-search-btn"
+                  >
+                    <i class="layui-icon layui-icon-search"></i> 搜 索
+                  </button>
+                </div>
+                <div class="layui-inline">
+                  <a
+                    type="button"
+                    class="layui-btn layui-btn-primary"
+                    id="data-reset-btn"
+                  >
+                    <i class="layui-icon"></i> 重 置
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button
+              class="layui-btn layui-btn-normal layui-btn-sm"
+              lay-event="add"
+            >
+              添加
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              lay-event="delete"
+            >
+              删除
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-sucess"
+              lay-event="refresh"
+            >
+              刷新
+            </button>
+            <button
+              class="layui-btn layui-btn-sm layui-btn-warm"
+              lay-event="export"
+            >
+              导出全部数据
+            </button>
+          </div>
+        </script>
+
+        <table
+          class="layui-hide"
+          id="currentTableId"
+          lay-filter="currentTableFilter"
+        ></table>
+      </div>
+    </div>
+
+    <script type="text/html" id="userEditDialog">
+      <form
+        id="userEditForm"
+        lay-filter="userEditForm"
+        class="layui-form layui-form-pane"
+        style="padding-left:20px;margin-top: 20px;"
+      >
+        <div class="layui-row">
+          <div class="layui-col-md12">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">招聘部门:</label>
+                <div class="layui-input-inline">
+                  <select
+                    id="editdepartment"
+                    lay-verType="tips"
+                    lay-verify="required"
+                    lay-filter="selectDepartment"
+                  >
+                    <option value="">请选择部门</option>
+                  </select>
+                  <input
+                    type="hidden"
+                    name="departmentName"
+                    id="editdepartmentName"
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">招聘岗位:</label>
+                <div class="layui-input-inline">
+                  <select
+                    id="editposition"
+                    lay-verType="tips"
+                    lay-verify="required"
+                    lay-filter="selectposition"
+                  >
+                    <option value="">请选择岗位</option>
+                  </select>
+                  <input
+                    type="hidden"
+                    name="positionName"
+                    id="editpositionName"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">需求人数:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="text"
+                    name="needNum"
+                    autocomplete="off"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="number"
+                  />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">学历要求:</label>
+                <div class="layui-input-inline">
+                  <select name="needEducation">
+                    <option value="初中">初中</option>
+                    <option value="高中">高中</option>
+                    <option value="大专">大专</option>
+                    <option value="本科">本科</option>
+                    <option value="硕士">硕士</option>
+                    <option value="博士">博士</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">招聘内容:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="text"
+                    name="demand"
+                    autocomplete="off"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="required"
+                  />
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">招聘时间:</label>
+                <div class="layui-input-inline">
+                  <input
+                    type="text"
+                    id="editdate"
+                    autocomplete="off"
+                    class="layui-input"
+                    lay-verType="tips"
+                    lay-verify="required"
+                  />
+                  <input type="hidden" name="startDate" id="editstartDate" />
+                  <input type="hidden" name="endTime" id="editendTime" />
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">招聘状态:</label>
+                <div class="layui-input-block">
+                  <input
+                    type="radio"
+                    name="recruitStatus"
+                    value="1"
+                    title="招聘中"
+                    checked
+                  />
+                  <input
+                    type="radio"
+                    name="recruitStatus"
+                    value="2"
+                    title="已完成"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-input-block">
+          <button class="layui-btn" lay-filter="userEditSubmit" lay-submit>
+            提交
+          </button>
+          <button class="layui-btn layui-btn-primary" type="button" id="Cancel">
+            取消
+          </button>
+        </div>
+      </form>
+    </script>
+
+    <script type="text/html" id="currentTableBar">
+      <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit"
+        >编辑</a
+      >
+      <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"
+        >删除</a
+      >
+    </script>
+
+    <script
+      src="../../layuimini/lib/layui-v2.5.5/layui.js"
+      charset="utf-8"
+    ></script>
+    <script src="../../layuimini/js/lay-config.js" charset="utf-8"></script>
+    <script>
+      var tableIns
+      layui.use(
+        ['layer', 'form', 'table', 'laydate', 'common', 'excel'],
+        function (args) {
+          var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table,
+            common = layui.common,
+            excel = layui.excel
+
+          tableIns = table.render({
+            elem: '#currentTableId',
+            url: common.api + '/recruit/list',
+            where: { token: common.getToken },
+            toolbar: '#toolbarDemo',
+            title: '职工招聘信息',
+            limits: [1, 5, 10, 15, 20],
+            limit: 15,
+            page: true,
+            skin: 'row',
+            even: true,
+            cols: [
+              [
+                {
+                  type: 'checkbox',
+                  width: 50,
+                },
+                {
+                  field: 'id',
+                  title: 'ID',
+                  width: 80,
+                  sort: true,
+                  align: 'center',
+                },
+                {
+                  field: 'positionName',
+                  width: 150,
+                  title: '招聘岗位',
+                  align: 'center',
+                },
+                {
+                  field: 'departmentName',
+                  width: 150,
+                  title: '所属部门',
+                  align: 'center',
+                },
+                {
+                  field: 'needNum',
+                  width: 150,
+                  title: '需求人数',
+                  align: 'center',
+                  sort: true,
+                },
+                {
+                  field: 'demand',
+                  width: 250,
+                  title: '招聘内容',
+                  align: 'center',
+                },
+                {
+                  field: 'needEducation',
+                  width: 150,
+                  title: '学历要求',
+                  align: 'center',
+                },
+                {
+                  field: 'startDate',
+                  width: 150,
+                  title: '发布日期',
+                  align: 'center',
+                  templet: function (d) {
+                    var time = layui.util.toDateString(
+                      d.startDate,
+                      'yyyy-MM-dd'
+                    )
+                    return '<div>' + time + '</div>'
+                  },
+                  sort: true,
+                },
+                {
+                  field: 'endTime',
+                  width: 150,
+                  title: '结束日期',
+                  align: 'center',
+                  templet: function (d) {
+                    var time = layui.util.toDateString(d.endTime, 'yyyy-MM-dd')
+                    return '<div>' + time + '</div>'
+                  },
+                },
+                {
+                  field: 'recruitStatus',
+                  width: 150,
+                  title: '招聘状态',
+                  align: 'center',
+                  templet: function (d) {
+                    if (d.recruitStatus == 1)
+                      return '<span class="layui-badge layui-bg-green">进行中</span>'
+                    if (d.recruitStatus == 2)
+                      return '<span class="layui-badge layui-bg-black">已完成</span>'
+                  },
+                },
+                {
+                  title: '操作',
+                  minWidth: 150,
+                  toolbar: '#currentTableBar',
+                  align: 'center',
+                },
+              ],
+            ],
+            parseData: function (res) {
+              if (res.code != 200) {
+                common.login()
+              }
+              return {
+                code: res.code, //解析接口状态
+                msg: res.msg, //解析提示文本
+                count: res.data.total, //解析数据长度
+                data: res.data.list, //解析数据列表
+              }
+            },
+            response: {
+              statusCode: 200, //重新规定成功的状态码为 200，table 组件默认为 0
+            },
+            request: {
+              pageName: 'page', //页码的参数名称，默认：page
+              limitName: 'size', //每页数据量的参数名，默认：limit
+            },
+          })
+
+          // 监听搜索操作
+          form.on('submit(data-search-btn)', function (data) {
+            var param = data.field
+            console.log(param)
+            // 执行搜索重载
+            tableIns.reload({
+              url: common.api + '/recruit/list',
+              method: 'get',
+              where: param,
+            })
+            return false
+          })
+
+          //监听工具栏添加删除刷新
+          table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+              // 监听添加操作
+              showEditModel()
+            } else if (obj.event === 'delete') {
+              // 监听删除操作
+              var data = table.checkStatus('currentTableId').data
+              if (data.length === 0) {
+                layer.msg('请选择要删除的数据', { icon: 2 })
+                return
+              }
+              var ids = data.map(function (d) {
+                return d.id
+              })
+              doDel(ids)
+            } else if (obj.event === 'refresh') {
+              tableIns.reload({
+                url: common.api + '/recruit/list',
+                where: { departmentName: '' },
+              })
+            } else if (obj.event === 'export') {
+              common.ajax(common.api + '/recruit/all', null, function (res) {
+                var data = res.data
+                $.each(data, function (index, item) {
+                  if (item.recruitStatus == 1) {
+                    item.recruitStatus = '进行中'
+                  } else if (item.recruitStatus == 2) {
+                    item.recruitStatus = '已完成'
+                  }
+                })
+                data = common.compare(data)
+                console.log(data)
+                data = excel.filterExportData(data, [
+                  'id',
+                  'departmentName',
+                  'positionName',
+                  'needNum',
+                  'demand',
+                  'needEducation',
+                  'startDate',
+                  'endTime',
+                  'recruitStatus',
+                ])
+                data.unshift({
+                  id: '招聘编号',
+                  departmentName: '所属部门',
+                  positionName: '招聘岗位',
+                  needNum: '需求人数',
+                  demand: '招聘内容',
+                  needEducation: '学历要求',
+                  startDate: '发布日期',
+                  endTime: '结束日期',
+                  recruitStatus: '招聘状态',
+                })
+                var timestart = Date.now()
+                excel.exportExcel(
+                  {
+                    sheet1: data,
+                  },
+                  '招聘信息.xlsx',
+                  'xlsx'
+                )
+                var timeend = Date.now()
+
+                var spent = (timeend - timestart) / 1000
+                layer.msg('单纯导出耗时 ' + spent + ' s')
+              })
+            }
+          })
+
+          //监听编辑删除
+          table.on('tool(currentTableFilter)', function (obj) {
+            if (obj.event === 'edit') {
+              showEditModel(obj.data)
+            } else if (obj.event === 'delete') {
+              doDel([obj.data.id])
+            }
+          })
+
+          function showEditModel(formData) {
+            var idx = layer.open({
+              type: 1,
+              area: ['50%', '50%'],
+              title: formData ? '编辑' : '添加',
+              anim: 1,
+              shade: 0.6,
+              content: $('#userEditDialog').html(),
+              success: function (layero, dIndex) {
+                // 回显表单数据
+                form.val('userEditForm', formData)
+                if (formData) {
+                  var time =
+                    layui.util.toDateString(formData.startDate, 'yyyy-MM-dd') +
+                    ' - ' +
+                    layui.util.toDateString(formData.endTime, 'yyyy-MM-dd')
+                }
+                //加载日期
+                laydate.render({
+                  elem: '#editdate',
+                  format: 'yyyy-MM-dd',
+                  value: formData ? time : '',
+                  range: true,
+                  done: function (value) {
+                    var date = value.split(' - ')
+                    $('#editstartDate').val(date[0])
+                    $('#editendTime').val(date[1])
+                  },
+                })
+                //select框部门、岗位的数据动态加载
+                $.each(selectData, function (index, item) {
+                  var option = new Option(item.departmentName, item.id)
+                  $('#editdepartment').append(option)
+                })
+                if (formData) {
+                  var index = $('#editdepartment').val()
+                  $(
+                    '#editdepartment option:contains(' +
+                      formData.departmentName +
+                      ')'
+                  ).each(function () {
+                    if ($(this).text() == formData.departmentName) {
+                      $(this).attr('selected', true)
+                      index = this.value
+                    }
+                  })
+                  var selectPosition = positionSelect(index)
+                  $.each(selectPosition, function (index, item) {
+                    var option = new Option(item.positionName, item.id)
+                    $('#editposition').append(option)
+                  })
+
+                  $(
+                    '#editposition option:contains(' +
+                      formData.positionName +
+                      ')'
+                  ).each(function () {
+                    if ($(this).text() == formData.positionName) {
+                      $(this).attr('selected', true)
+                    }
+                  })
+                }
+                form.render('select')
+                // 表单提交事件
+                form.on('submit(userEditSubmit)', function (data) {
+                  console.log(data.field)
+                  common.ajax(
+                    formData
+                      ? common.api + '/recruit/' + formData.id
+                      : common.api + '/recruit',
+                    JSON.stringify(data.field),
+                    function (res) {
+                      if (res.code === 200) {
+                        layer.close(dIndex)
+                        layer.msg(res.msg, { icon: 1 })
+                        table.reload('currentTableId')
+                      } else {
+                        layer.msg(res.msg, { icon: 2 })
+                      }
+                    },
+                    formData ? 'put' : 'post',
+                    function (data) {
+                      layer.msg(data.msg, { icon: 2 })
+                    }
+                  )
+                  return false
+                })
+
+                $('#Cancel').click(function () {
+                  layer.close(idx)
+                })
+              },
+            })
+          }
+
+          // 监听编辑页面 部门选择框
+          form.on('select(selectDepartment)', function (data) {
+            var selectPosition = positionSelect(data.value)
+            $('#editposition').empty()
+            $.each(selectPosition, function (index, item) {
+              var option = new Option(item.positionName, item.id)
+              $('#editposition').append(option)
+            })
+            var txtval = data.elem[data.elem.selectedIndex].text
+            $('#editdepartmentName').val(txtval)
+            form.render('select')
+            $('#editpositionName').val(
+              $('#editposition').find('option:selected').text()
+            )
+          })
+          form.on('select(selectposition)', function (data) {
+            var txtval = data.elem[data.elem.selectedIndex].text
+            $('#editpositionName').val(txtval)
+          })
+
+          function doDel(ids) {
+            layer.confirm(
+              '确定要删除选中数据吗？',
+              {
+                skin: 'layui-layer-admin',
+                shade: 0.1,
+              },
+              function (i) {
+                common.ajax(
+                  common.api + '/recruit',
+                  JSON.stringify(ids),
+                  function (res) {
+                    if (res.code === 200) {
+                      layer.msg(res.msg, { icon: 1 })
+                      tableIns.reload()
+                    } else {
+                      layer.msg(res.msg, { icon: 2 })
+                    }
+                  },
+                  'DELETE', // 提交方式
+                  function (data) {
+                    console.log(data)
+                    layer.msg(data.msg, { icon: 2, time: 1000 })
+                    return
+                  }
+                )
+                layer.close(i)
+              }
+            )
+          }
+
+          //搜索 部门下拉框
+          form.on('select(select)', function (obj) {
+            if (obj.elem.selectedIndex == 0) $('#departmentName').val('')
+            if (obj.elem.selectedIndex != 0) {
+              var txtval = obj.elem[obj.elem.selectedIndex].text
+              $('#departmentName').val(txtval)
+            }
+          })
+
+          var selectData, personalDate
+          layer.ready(function () {
+            //select 框的数据动态加载
+            common.ajax(
+              common.api + '/department/select',
+              null,
+              function (data) {
+                selectData = data.data
+                $.each(selectData, function (index, item) {
+                  var option = new Option(item.departmentName, item.id)
+                  $('#selectId').append(option)
+                })
+                form.render('select')
+              }
+            )
+            common.ajax(common.api + '/personal/select', null, function (data) {
+              personalDate = data.data
+            })
+            // 监听重置操作
+            $('#data-reset-btn').click(function () {
+              $('#selectId').val(0)
+              $('#departmentName').val('')
+              $('#recruitStatus').val(0)
+              form.render('select')
+              tableIns.reload({
+                url: common.api + '/recruit/list',
+                method: 'get',
+                where: {
+                  departmentName: '',
+                  recruitStatus: 0,
+                },
+              })
+            })
+          })
+
+          function positionSelect(departmentId) {
+            var selectPosition
+            common.ajax(
+              common.api + '/position/select/' + departmentId,
+              null,
+              function (data) {
+                selectPosition = data.data
+              },
+              'get',
+              null,
+              false
+            )
+            return selectPosition
+          }
+        }
+      )
+    </script>
+  </body>
+</html>

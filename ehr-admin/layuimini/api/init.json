@@ -1,0 +1,87 @@
+{
+	"homeInfo": {
+		"title": "首页",
+		"href": "page/welcome.html"
+	},
+	"logoInfo": {
+		"title": "人事管理系统",
+		"image": "layuimini/images/logo.png",
+		"href": "/"
+	},
+	"menuInfo": [{
+			"title": "员工管理",
+			"icon": "fa fa-address-book",
+			"href": "",
+			"target": "_self",
+			"child": [{
+				"title": "员工管理",
+				"href": "page/personal.html",
+				"icon": "fa fa-male",
+				"target": "_self"
+			}]
+		},
+		{
+			"title": "部门管理",
+			"icon": "fa fa-address-card",
+			"href": "",
+			"target": "_self",
+			"child": [{
+					"title": "部门管理",
+					"href": "page/department.html",
+					"icon": "fa fa-address-card-o",
+					"target": "_self"
+				},
+				{
+					"title": "部门岗位管理",
+					"href": "page/position.html",
+					"icon": "fa fa-id-card",
+					"target": "_self"
+				}
+			]
+		},
+		{
+			"title": "人事管理",
+			"icon": "fa fa-users",
+			"href": "",
+			"target": "_self",
+			"child": [{
+					"title": "招聘管理",
+					"href": "page/Recruitment.html",
+					"icon": "fa fa-user-plus",
+					"target": "_self"
+				},
+				{
+					"title": "培训管理",
+					"href": "page/personalTrain.html",
+					"icon": "fa fa-graduation-cap",
+					"target": "_self"
+				},
+				{
+					"title": "奖惩管理",
+					"href": "page/personalReward.html",
+					"icon": "fa fa-television",
+					"target": "_self"
+				},
+				{
+					"title": "薪资管理",
+					"href": "page/personalSalary.html",
+					"icon": "fa fa-envelope",
+					"target": "_self"
+				}
+			]
+		},
+		{
+			"title": "系统设置",
+			"icon": "fa fa-gears",
+			"href": "",
+			"target": "_self",
+			"child": [{
+					"title": "操作员管理",
+					"href": "page/userList.html",
+					"icon": "fa fa-cogs",
+					"target": "_self"
+				}
+			]
+		}
+	]
+}
