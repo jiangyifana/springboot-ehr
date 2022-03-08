@@ -16,9 +16,10 @@ Springboot+MyBatis+MySQL+Layui-mini后台框架
 
 1. 使用Navicat或者其它工具，在mysql中创建对应名称的数据库，并导入项目的sql文件
 2. 使用IDEA/Eclipse/MyEclipse导入项目
-3. 将项目中resources/application-dev.yml配置文件中的数据库、又拍云oss配置改为自己的配置
-4. 将前端项目ehr-admin目录配置nginx/或者导入vs code使用Live Server插件启动
-4. 运行成功后，在浏览器中输入地址：http://localhost:8080/login.html  
+3. 将项目中resources/application-dev.yml配置文件中的数据库地址、又拍云oss配置改为自己的配置（又拍云oss作用：上传、储存图片，没有可以不配置）
+4. 启动后端项目
+5. 部署前端项目（ehr-admin目录）配置nginx部署；或者导入vs code，使用Live Server插件启动 
+6. 运行成功后，在浏览器中输入地址进行访问：http://localhost:8080/login.html  
    管理员账号: admin 密码: admin123  
    普通用户：test 密码：test  
 
