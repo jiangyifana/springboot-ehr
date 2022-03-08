@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,6 +71,8 @@ public class PositionServiceImpl implements PositionService {
         departmentService.find(positionForm.getDepartmentId());
         Position position = new Position();
         BeanUtils.copyProperties(positionForm, position);
+        position.setCreateTime(new Date());
+        position.setUpdateTime(new Date());
         positionDao.insertSelective(position);
     }
 
@@ -102,6 +105,7 @@ public class PositionServiceImpl implements PositionService {
         }
         BeanUtils.copyProperties(positionForm, position);
         position.setId(id);
+        position.setUpdateTime(new Date());
         positionDao.updateByPrimaryKeySelective(position);
     }
 

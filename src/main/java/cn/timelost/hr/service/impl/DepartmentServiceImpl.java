@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,6 +80,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void insert(DepartmentForm record) {
         Department department = new Department();
         BeanUtils.copyProperties(record, department);
+        department.setCreateTime(new Date());
+        department.setUpdateTime(new Date());
         departmentDao.insertSelective(department);
     }
 
@@ -107,6 +110,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         BeanUtils.copyProperties(record, department);
         department.setId(id);
+        department.setUpdateTime(new Date());
         departmentDao.updateByPrimaryKeySelective(department);
     }
 
