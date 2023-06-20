@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 days" debug="false">
+    <!--日志输出目录-->
+    <property name="LOG_HOME" value="/data/logs/ehr"/>
+    <!--日志文件名-->
+    <property name="FILE_NAME" value="ehr"/>
+    <property name="LOG_NAME_SUFFIX" value="-service"/>
+    <property name="FILE_EXT" value=".log"/> 
+    <property name="FILE_ZIP_EXT" value=".log.gz"/>
+    <property name="FILE_PATTERN" value="-%d{yyyy-MM-dd}"/>                           
+    <!--日志文件保留天数-->
+    <property name="MAX_HISTORY" value="180"/> 
+    <property name="CHARSET" value="UTF-8"/>
+    <!-- 日志样式 -->       
+    <property name="PATTERN" value="[%d][%p][%c{3}:%L][%t] [requestId=%X{tractId}]%msg%n"/>  
+    
+    <!-- 控制台输出日志-->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+    </appender>
+    
+    <!-- 文件输出日志 -->
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <file>${LOG_HOME}/${FILE_NAME}${LOG_NAME_SUFFIX}${FILE_EXT}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${FILE_NAME}${FILE_PATTERN}${LOG_NAME_SUFFIX}${FILE_ZIP_EXT}</fileNamePattern>
+            <!-- 根据日志文件按天滚动，超过最大天数将被清理 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+    </appender>
+     
+    <root level="${log.level:-info}">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="RollingFile"/>
+    </root>
+     
+</configuration>
