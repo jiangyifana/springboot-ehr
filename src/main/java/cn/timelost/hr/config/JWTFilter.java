@@ -1,9 +1,12 @@
 package cn.timelost.hr.config;
 
-import cn.hutool.json.JSONUtil;
-import cn.timelost.hr.enums.ResultEnum;
-import cn.timelost.hr.vo.ResultVo;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -13,13 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
+import cn.hutool.json.JSONUtil;
+import cn.timelost.hr.enums.ResultEnum;
+import cn.timelost.hr.vo.ResultVo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author: Jyf
@@ -59,8 +59,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         if (ObjectUtils.isEmpty(token)) {
             token = httpServletRequest.getParameter("token");
             if (ObjectUtils.isEmpty(token)) {
-                log.error("未携带Token，禁止访问接口" + ((HttpServletRequest) request).getRequestURI());
-                tokenError(response, "未携带Token，禁止访问接口");
+                log.error("用户未登录，禁止访问接口" + ((HttpServletRequest) request).getRequestURI());
+                tokenError(response, "用户未登录，禁止访问接口");
                 return false;
             }
         }

@@ -21,6 +21,8 @@ public enum ResultEnum {
     PASSWORD_FAIL(21, "用户名或密码错误"),
     CODE_NOT_EXIST(22, "请输入验证码"),
     CODE_FAIL(23, "验证码错误"),
+    DEPARTMENT_IS_BIND(24, "删除失败，部门已被：[%s] 绑定，请解除后重试"),
+    POSITION_IS_BIND(25, "删除失败，岗位已被：[%s] 绑定，请解除后重试"),
 
     UPLOAD_FAIL(50, "服务器上传失败"),
     UPLOAD_NOT_ENABLE(51, "上传配置未开启"),

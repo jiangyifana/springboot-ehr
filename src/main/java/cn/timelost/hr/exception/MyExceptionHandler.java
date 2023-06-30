@@ -1,20 +1,18 @@
 package cn.timelost.hr.exception;
 
-import cn.timelost.hr.enums.ResultEnum;
-import cn.timelost.hr.vo.ResultVo;
-import lombok.extern.slf4j.Slf4j;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Objects;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Objects;
+import cn.timelost.hr.enums.ResultEnum;
+import cn.timelost.hr.vo.ResultVo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author: Jyf
@@ -26,7 +24,8 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResultVo handlerException(BaseException e) {
-        return ResultVo.fail(e.getResultEnum());
+//        log.error("handlerException.", e);
+        return ResultVo.fail(e.getResultEnum(), e.getMsg());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
