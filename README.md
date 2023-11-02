@@ -19,7 +19,7 @@ MySQL 5.7
 
 1. 使用Navicat或者其它工具，在mysql中创建对应名称的数据库，并导入项目的sql文件（src/main/resources/sql/ehr.sql）
 2. 使用IDEA/Eclipse导入项目
-3. 将项目中resources/application-dev.yml配置文件中的数据库地址、又拍云oss配置改为自己的配置（又拍云oss作用：上传、储存图片，没有可以不配置）
+3. 将项目中resources/application-dev.yml配置文件中的数据库地址、又拍云oss配置改为自己的配置（又拍云oss作用：上传、储存图片，不用可以不配置）
 4. 使用IDEA/Eclipse启动后端项目
 5. 部署前端项目（ehr-admin目录）配置nginx部署；或者导入vs code，使用Live Server插件启动 
 6. 运行成功后，在浏览器中输入地址进行访问：http://localhost/login.html  
@@ -62,4 +62,4 @@ server {
 #### 问题联系
 
 环境问题、部署问题、毕业设计等问题请联系
-![问题联系](https://ae02.alicdn.com/kf/Hc2f08f3dd83346a989d1cc49c42c8cd9k.png)
+![问题联系](http://image.timelost.cn/Snipaste_2023-11-02_09-04-43.png)
