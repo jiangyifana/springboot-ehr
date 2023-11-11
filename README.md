@@ -62,4 +62,4 @@ server {
 #### 问题联系
 
 环境问题、部署问题、毕业设计等问题请联系
-![问题联系](http://image.timelost.cn/Snipaste_2023-11-02_09-04-43.png)
+![问题联系](https://timelost.cn/img/QR.png)
